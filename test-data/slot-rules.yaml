@@ -1,0 +1,36 @@
+# Morning slots for laser cutter
+one:
+  id: 1
+  resource_id: 2
+  weekday: 1
+  start_time: 34200
+  end_time: 48600
+  type: ?????
+two:
+  id: 2
+  resource_id: 2
+  weekday: 2
+  start_time: 34200
+  end_time: 48600
+  type: ?????
+three:
+  id: 3
+  resource_id: 2
+  weekday: 3
+  start_time: 34200
+  end_time: 48600
+  type: ?????
+four:
+  id: 4
+  resource_id: 2
+  weekday: 4
+  start_time: 34200
+  end_time: 48600
+  type: ?????
+five:
+  id: 5
+  resource_id: 2
+  weekday: 5
+  start_time: 34200
+  end_time: 48600
+  type: ?????

@@ -1,0 +1,35 @@
+dinky:
+  id: 1
+  name: Dinky
+  type: room
+  capacity: 1
+  min_length: 1800
+  max_length: 28800
+sophia:
+  id: 2
+  name: Sophia
+  type: laser-cutter
+  capacity: 1
+  min_length: null
+  max_length: null
+gerald:
+  id: 3
+  name: Gerald
+  type: laser-cutter
+  capacity: 1
+  min_length: null
+  max_length: null
+events:
+  id: 4
+  name: Events Room
+  type: room
+  capacity: 1
+  min_length: null
+  max_length: null
+desks:
+  id: 5
+  name: Hot Desk
+  type: hot-desk
+  capacity: 10
+  min_length: null
+  max_length: null
