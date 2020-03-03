@@ -7,5 +7,4 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 ## Install
 
  1. `npm install`
-
-
+ 2. `npm run serve`
