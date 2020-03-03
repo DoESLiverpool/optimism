@@ -1,12 +1,8 @@
 const express = require('express')
-const Sequelize = require('sequelize')
+const db = require('./db')
+const Resource = require('./models/resource')
 const app = express()
 const port = 3000
-
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'db/development.sqlite'
-})
 
 app.get('/', (req, res) => res.send('Hello Optimism!'))
 
