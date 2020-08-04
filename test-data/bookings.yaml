@@ -3,14 +3,14 @@ one:
     resource_id: 1
     email: john@example.com
     name: John Appleseed
-    start_time: 2020-08-04 13:30:00
-    end_time: 2020-08-04 15:00:00
+    start_time: 2020-08-04T13:30:00+0100
+    end_time: 2020-08-04T15:00:00+0100
     note:
 two:
     id: 2
     resource_id: 3
     email: dave@example.com
     name: Dave Daveson
-    start_time: 2020-08-06 09:30:00
-    end_time: 2020-08-06 17:30:00
+    start_time: 2020-08-06T09:30:00+0100
+    end_time: 2020-08-06T17:30:00+0100
     note: "Hoping Gerald is cutting ok!"
