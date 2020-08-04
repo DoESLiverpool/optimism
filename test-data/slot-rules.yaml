@@ -11,20 +11,25 @@
 # 7 - sunday
 # 10 - weekday
 # 11 - weekend
-one:
+fullday:
   id: 1
   weekday: 10
   start_time: 9:30
   end_time: 17:30
   type: ?????
-two:
+morning:
   id: 2
   weekday: 10
   start_time: 9:30
   end_time: 13:30
-three:
+afternoon:
   id: 3
   weekday: 10
   start_time: 13:30
   end_time: 17:30
   type: ?????
+evening:
+  id: 4
+  weekday: 10
+  start_time: 19:00
+  end_time: 21:00
