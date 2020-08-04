@@ -1,0 +1,37 @@
+gerald-1:
+    resource_id: 3
+    slot_rule_id: 1
+gerald-2:
+    resource_id: 3
+    slot_rule_id: 2
+gerald-3:
+    resource_id: 3
+    slot_rule_id: 3
+sophia-1:
+    resource_id: 2
+    slot_rule_id: 1
+sophia-2:
+    resource_id: 2
+    slot_rule_id: 2
+sophia-3:
+    resource_id: 2
+    slot_rule_id: 3
+events-1:
+    resource_id: 4
+    slot_rule_id: 1
+events-2:
+    resource_id: 4
+    slot_rule_id: 2
+events-3:
+    resource_id: 4
+    slot_rule_id: 3
+desks-1:
+    resource_id: 5
+    slot_rule_id: 1
+desks-2:
+    resource_id: 5
+    slot_rule_id: 2
+desks-3:
+    resource_id: 5
+    slot_rule_id: 3
+
