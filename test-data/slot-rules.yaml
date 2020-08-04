@@ -1,36 +1,33 @@
 # Morning slots for laser cutter
+# Weekdays: (suggested, shout if you know better, cron inspired)
+# nil - every day
+# 0 - sunday
+# 1 - monday
+# 2 - tuesday
+# 3 - wednesday
+# 4 - thursday
+# 5 - friday
+# 6 - saturday
+# 7 - sunday
+# 10 - weekday
+# 11 - weekend
 one:
   id: 1
   resource_id: 2
-  weekday: 1
-  start_time: 34200
-  end_time: 48600
+  weekday: 10
+  start_time: 9:30
+  end_time: 17:30
   type: ?????
 two:
   id: 2
   resource_id: 2
-  weekday: 2
-  start_time: 34200
-  end_time: 48600
-  type: ?????
+  weekday: 10
+  start_time: 9:30
+  end_time: 13:30
 three:
   id: 3
   resource_id: 2
-  weekday: 3
-  start_time: 34200
-  end_time: 48600
-  type: ?????
-four:
-  id: 4
-  resource_id: 2
-  weekday: 4
-  start_time: 34200
-  end_time: 48600
-  type: ?????
-five:
-  id: 5
-  resource_id: 2
-  weekday: 5
-  start_time: 34200
-  end_time: 48600
+  weekday: 10
+  start_time: 13:30
+  end_time: 17:30
   type: ?????
