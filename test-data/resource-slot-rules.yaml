@@ -25,6 +25,9 @@ events-2:
 events-3:
     resource_id: 4
     slot_rule_id: 3
+events-4:
+    resource_id: 4
+    slot_rule_id: 4
 desks-1:
     resource_id: 5
     slot_rule_id: 1
@@ -34,4 +37,3 @@ desks-2:
 desks-3:
     resource_id: 5
     slot_rule_id: 3
-
