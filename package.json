@@ -9,7 +9,7 @@
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
     "css": "node-sass bootstrap/optimism.scss -o website/static/css",
-    "css-watch": "node-sass bootstrap/optimism.scss -w -o website/static/css",
+    "css-watch": "node-sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
     "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
   },
   "repository": {
