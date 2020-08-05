@@ -5,7 +5,9 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "node src/app.js"
+    "website": "nodemon --watch website website/app.js",
+    "api": "nodemon --watch api api/app.js",
+    "both": "concurrently -n \"website,api\" \"nodemon --watch website website/app.js\" \"nodemon --watch api api/app.js\""
   },
   "repository": {
     "type": "git",
