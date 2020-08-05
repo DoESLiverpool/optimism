@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
-    "both": "concurrently -n \"website,api\" \"nodemon --watch website website/app.js\" \"nodemon --watch api api/app.js\""
+    "both": "concurrently -n \"website,api\" \"nodemon --watch website website/app.js\" \"nodemon --watch api api/app.js\"",
+    "css": "node-sass bootstrap/optimism.scss -o website/static/css"
   },
   "repository": {
     "type": "git",
