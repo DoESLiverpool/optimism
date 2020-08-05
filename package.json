@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
-    "both": "concurrently -n \"website,api\" \"nodemon --watch website website/app.js\" \"nodemon --watch api api/app.js\"",
-    "css": "node-sass bootstrap/optimism.scss -o website/static/css"
+    "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
+    "css": "node-sass bootstrap/optimism.scss -o website/static/css",
+    "css-watch": "node-sass bootstrap/optimism.scss -w -o website/static/css",
+    "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
   },
   "repository": {
     "type": "git",
