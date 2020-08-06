@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<main role="main">
+    <div class="booking-step">
+    <div class="container">
+        <h1>
+            Make a booking
+        </h1>
+        <h2>
+            <small class="text-muted">Confirmation</small><br>
+            Your booking is complete     
+        </h2>
+    </div>
+    </div>
+    <div class="container">
+
+        <div class="mock-block">
+            <h3>Confirmation of booking details</h3>
+            <p>Instructions to check email, contact details if any enquiries,
+            anything else useful to the user.</p>
+            <p>This is where any error messages would appear as well.</p>
+        </div>
+
+        <a class="btn btn-success" href="/choose-a-resource" role="button">
+            Make another booking
+        </a>
+
+    </div> <!-- /container -->
+
+</main>
+
+{% endblock %}

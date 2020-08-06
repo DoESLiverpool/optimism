@@ -28,4 +28,12 @@ app.get('/select-a-time', function(req, res) {
     res.render('select-a-time.html');
 });
 
+app.get('/your-details', function(req, res) {
+    res.render('your-details.html');
+});
+
+app.get('/confirmation', function(req, res) {
+    res.render('confirmation.html');
+});
+
 app.listen(port, () => console.log(`Optimism website listening on port ${port}`));
