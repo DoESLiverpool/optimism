@@ -17,7 +17,15 @@ nunjucks.configure(templatesFolder, {
 app.use(express.static(staticFilesRootDirectory));
 
 app.get('/', function(req, res) {
-    res.render('index.html');
+    res.render('home.html');
+});
+
+app.get('/choose-a-resource', function(req, res) {
+    res.render('choose-a-resource.html');
+});
+
+app.get('/select-a-time', function(req, res) {
+    res.render('select-a-time.html');
 });
 
 app.listen(port, () => console.log(`Optimism website listening on port ${port}`));

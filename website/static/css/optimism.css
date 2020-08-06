@@ -7155,4 +7155,16 @@ a.text-dark:hover, a.text-dark:focus {
     border-color: #dee2e6; } }
 
 body {
-  background-color: green; }
+  padding-top: 3.5rem; }
+
+.navbar-brand img {
+  height: 2rem;
+  width: auto; }
+
+.booking-step {
+  padding: 2rem 0 1rem 0;
+  margin: 0 0 1rem 0;
+  background-color: #e9ecef; }
+
+.aka {
+  font-variant: small-caps; }
