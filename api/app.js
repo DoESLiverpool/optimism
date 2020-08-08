@@ -1,6 +1,4 @@
 const express = require('express')
-const db = require('./db')
-const Resource = require('./models/resource')
 const app = express()
 const port = 3001
 
