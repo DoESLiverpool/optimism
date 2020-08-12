@@ -2,17 +2,15 @@ const express = require('express')
 const app = express()
 const port = 3001
 
-const publicResourceRoutes = require('./routes/public/resources');
-const publicBookingRoutes = require('./routes/public/bookings');
-const publicCalendarRoutes = require('./routes/public/calendar');
-const publicSlotRoutes = require('./routes/public/slots');
+const resourceRoutes = require('./routes/resources');
+const bookingRoutes = require('./routes/bookings');
+const calendarRoutes = require('./routes/calendar');
+const slotRoutes = require('./routes/slots');
 
 app.use(express.json());
-app.use('/api/resources', publicResourceRoutes);
-app.use('/api/bookings', publicBookingRoutes);
-app.use('/api/calendar', publicCalendarRoutes);
-app.use('/api/slots', publicSlotRoutes);
-
+app.use('/api/resources', resourceRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/calendar', calendarRoutes);
+app.use('/api/slots', slotRoutes);
 
 app.listen(port, () => console.log(`Optimism api listening on port ${port}.`))
-
