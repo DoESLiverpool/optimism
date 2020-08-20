@@ -7173,8 +7173,10 @@ footer {
   font-variant: small-caps; }
 
 .mock-block {
-  padding: 4rem 1rem 1rem 1rem;
-  margin-bottom: 2rem;
+  display: grid;
+  place-items: center;
   text-align: center;
   height: 350px;
+  padding: 1rem;
+  margin-bottom: 2rem;
   background-color: #ced4da; }
