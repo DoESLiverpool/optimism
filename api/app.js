@@ -1,6 +1,8 @@
-const express = require('express')
-const app = express()
-const port = 3001
+const express = require('express');
+const app = express();
+
+require('dotenv').config();
+const port = process.env.OPTIMISM_API_PORT || 3001
 
 const resourceRoutes = require('./routes/resources');
 const bookingRoutes = require('./routes/bookings');

@@ -3,7 +3,9 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+
+require('dotenv').config();
+const port = process.env.OPTIMISM_WEBSITE_PORT || 3000
 
 const templatesFolder = path.join(__dirname, 'templates');
 const staticFilesRootDirectory = path.join(__dirname, 'static');
