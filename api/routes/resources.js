@@ -1,11 +1,36 @@
 const express = require('express');
+const knex = require('../db');
 
 const router = express.Router()
 module.exports = router;
 
-router.get('/', function(req, res) {
-    res.json({
-        source: req.baseUrl,
-        method: req.method
+router.get('/:resourceId?', function(req, res) {
+
+    let query = knex.select('id', 'name').from('resources');
+
+    const id = req.params.resourceId;
+    let singleResult = false;
+
+    if (id) {
+        query.where('id', id);
+        singleResult = true;
+    }
+
+    query.then(function (resources) {
+        if (singleResult) {
+            if (resources.length == 0) {
+                res.status(404);
+                res.json({message: 'No such resource'});
+            } else {
+                res.json(resources[0]);
+            }
+        }
+        else {
+            res.json(resources);
+        }
+    })
+    .catch(function(error) {
+        res.status(500);
+        res.json({message: error});
     });
 });
