@@ -6,7 +6,9 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
 ## Install
 
- `npm install`
+ 1. Install the dependencies `npm install`
+ 1. Set up the database `npx knex migrate:latest` (or if there have been any changes to the database structure, this will run the migrations)
+
 
 ## Script commands
 
