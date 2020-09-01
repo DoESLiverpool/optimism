@@ -23,7 +23,11 @@
         </div>
 
         <div class="calendar">
-
+            {% for d in calendar.dates %}
+                {% for r in d.resources %}
+                    <p>Resource name: {{r.resourceName}}</p>
+                {% endfor %}
+            {% endfor %}
         </div>
 
         <div class="mock-block">

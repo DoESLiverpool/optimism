@@ -16,7 +16,7 @@ router.get('/select-a-time', function (req, res) {
     }
 
     const resourceUrl = `${apiUrl}/resources/${resourceId}`;
-    const calendarUrl = `${apiUrl}/calendar`;
+    const calendarUrl = `${apiUrl}/calendar/2020-08-25/2020-09-01/1`;
     const templateVariables = {};
 
     axios.get(resourceUrl)
