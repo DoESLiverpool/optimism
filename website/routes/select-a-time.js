@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const moment = require('moment');
 const utilities = require('../utilities');
 const settings = require('../settings');
 
@@ -15,8 +16,12 @@ router.get('/select-a-time', function (req, res) {
         console.log('No resource id');
     }
 
+    // Default to showing the next week...
+    const fromDate = moment();
+    const toDate = moment().add(6, 'days')
+
     const resourceUrl = `${apiUrl}/resources/${resourceId}`;
-    const calendarUrl = `${apiUrl}/calendar/2020-08-25/2020-09-01/1`;
+    const calendarUrl = `${apiUrl}/calendar/${fromDate.format('YYYY-MM-DD')}/${toDate.format('YYYY-MM-DD')}/${resourceId}`;
     const templateVariables = {};
 
     axios.get(resourceUrl)

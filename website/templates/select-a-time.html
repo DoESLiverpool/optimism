@@ -25,7 +25,7 @@
         <div class="calendar">
             {% for d in calendar.dates %}
                 {% for r in d.resources %}
-                    <p>Resource name: {{r.resourceName}}</p>
+                    <p>{{ d.date }} Resource name: {{r.resourceName}}</p>
                 {% endfor %}
             {% endfor %}
         </div>
