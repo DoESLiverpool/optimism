@@ -8,7 +8,14 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
  1. Install the dependencies `npm install`
  1. Set up the database `npx knex migrate:latest` (or if there have been any changes to the database structure, this will run the migrations)
+ 1. Create a `.env` file in this folder.  This will hold any configuration options you need to set.  For a basic development setup this should suffice:
+    ````
+    OPTIMISM_API_PORT = 3001
+    OPTIMISM_WEBSITE_PORT = 3000
+    OPTIMISM_API_URL = 'http://localhost:3001/api'
 
+    OPTIMISM_ENABLE_DETAILED_ERROR_MESSAGES = 1
+    ````
 
 ## Script commands
 
