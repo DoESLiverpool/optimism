@@ -5,6 +5,9 @@ module.exports = {
     
     connection: {
       filename: './db/optimism.sqlite3'
+    },
+    seeds: {
+      directory: __dirname + '/seeds/development'
     }
   },
 };
