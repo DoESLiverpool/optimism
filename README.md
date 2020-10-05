@@ -2,13 +2,23 @@
 
 Software to help run [DoES Liverpool](https://doesliverpool.com)
 
+Most of the development work takes place on the `develop` branch.
+
 See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what needs to be done, and [somebody-should#670](https://github.com/DoESLiverpool/somebody-should/issues/670) for the background, and [the Optimism Wiki](https://github.com/DoESLiverpool/optimism/wiki) for meeting notes and more.
 
 ## Install
 
  1. Install the dependencies `npm install`
  1. Set up the database `npx knex migrate:latest` (or if there have been any changes to the database structure, this will run the migrations)
+ 1. Create a `.env` file in this folder.  This will hold any configuration options you need to set.  For a basic development setup this should suffice:
+    ````
+    OPTIMISM_API_PORT = 3001
+    OPTIMISM_WEBSITE_PORT = 3000
+    OPTIMISM_API_URL = 'http://localhost:3001/api'
 
+    OPTIMISM_ENABLE_DETAILED_ERROR_MESSAGES = 1
+    ````
+ 1. [Optional] Populate the development database with some sample data: `node node_modules/knex/bin/cli.js seed:run --env development` (**WARNING: this will delete any data in the database already**)
 
 ## Script commands
 
