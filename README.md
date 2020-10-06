@@ -18,7 +18,7 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
     OPTIMISM_ENABLE_DETAILED_ERROR_MESSAGES = 1
     ````
- 1. [Optional] Populate the development database with some sample data: `node node_modules/knex/bin/cli.js seed:run --env development` (**WARNING: this will delete any data in the database already**)
+ 1. [Optional] Populate the development database with some sample data: `npx knex seed:run --env development` (**WARNING: this will delete any data in the database already**)
 
 ## Script commands
 
