@@ -22,7 +22,7 @@
                         {{ resource.name }}
                         <br>
                         <small class="text-muted">
-                            <span class="aka">Additional name</span>
+                            <span class="aka">{{resource.type}}</span>
                         </small>
                     </h3>
                     <p>
@@ -32,7 +32,7 @@
                     </p>
                     <p>
                         <a class="btn btn-primary" href="/select-a-time?resource={{resource.id}}" role="button">
-                            Book (short name)
+                            Book ({{resource.name}})
                             &raquo;
                         </a>
                     </p>
