@@ -26,6 +26,9 @@
             {% for d in calendar.dates %}
                 {% for r in d.resources %}
                     <p>{{ d.date }} Resource name: {{r.resourceName}}</p>
+                    {% for s in r.slots %}
+                      <p>{{s.starts}} - {{s.ends}} {{s.status}}</p>
+                    {% endfor %}
                 {% endfor %}
             {% endfor %}
         </div>
