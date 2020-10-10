@@ -20,10 +20,14 @@
                 <div class="col-md-4">
                     <h3>
                         {{ resource.name }}
+                        <br>
+                        <small class="text-muted">
+                            <span class="aka">{{resource.resourceTypeName}}</span>
+                        </small>
                     </h3>
                     <p>
                         <a class="btn btn-primary" href="/select-a-time?resource={{resource.id}}" role="button">
-                            Book
+                            Book ({{resource.name}})
                             &raquo;
                         </a>
                     </p>

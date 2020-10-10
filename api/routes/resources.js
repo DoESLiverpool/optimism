@@ -6,7 +6,11 @@ module.exports = router;
 
 router.get('/:resourceId?', function(req, res) {
 
-    let query = knex.select('id', 'name').from('resources');
+    let query = knex.select('resources.id AS id', 'resources.name AS name', 'resource_types.name AS resourceTypeName')
+                    .from('resources')
+                    .join('resource_types', 'resources.resource_type_id', '=', 'resource_types.id' )
+                    .orderBy('resourceTypeName', 'asc')
+                    .orderBy('name', 'asc');
 
     const id = req.params.resourceId;
     let singleResult = false;
