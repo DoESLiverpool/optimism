@@ -16,7 +16,7 @@ router.get('/:resourceId?', function(req, res) {
     let singleResult = false;
 
     if (id) {
-        query.where('id', id);
+        query.where('resources.id', id);
         singleResult = true;
     }
 
