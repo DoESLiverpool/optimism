@@ -1,5 +1,35 @@
 {% extends "base.html" %}
 
+{% block header %}
+    <link href='/css/main.css' rel='stylesheet' />
+    <script src='/scripts/main.js'></script>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          events: [
+            {% for d in calendar.dates %}
+                {% for r in d.resources %}
+                    {% for s in r.slots %}
+                      {
+                        title: '{{r.resourceName}} - {{s.status}}',
+                        start: '{{s.starts}}',
+                        end: '{{s.ends}}',
+                        allDay: false
+                      },
+                    {% endfor %}
+                {% endfor %}
+            {% endfor %}
+          ]
+        });
+        calendar.render();
+      });
+
+    </script>
+{% endblock %}
+
 {% block main %}
 
 <main role="main">
@@ -20,6 +50,9 @@
             <p>{{title}}</p>
             <p>{{thing.name}}</p>
             <p>{{thing.description}}</p>
+        </div>
+
+        <div id="calendar">
         </div>
 
         <div class="calendar">
