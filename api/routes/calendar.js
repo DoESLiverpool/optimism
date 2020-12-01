@@ -92,8 +92,8 @@ router.get('/:startDate/:endDate/:resourceId', function (req, res) {
                 slots.forEach((s) => {
 
                     responseSlot = {
-                        starts: s.starts,
-                        ends: s.ends,
+                        starts: moment(currentDate).add(s.starts),
+                        ends: moment(currentDate).add(s.ends),
                         status: 'available'
                     };
 
