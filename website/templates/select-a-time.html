@@ -2,6 +2,7 @@
 
 {% block header %}
     <link href='/css/main.css' rel='stylesheet' />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='/scripts/main.js'></script>
     <script>
 
@@ -9,20 +10,26 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'timeGridWeek',
-          events: [
-            {% for d in calendar.dates %}
-                {% for r in d.resources %}
-                    {% for s in r.slots %}
-                      {
-                        title: '{{r.resourceName}} - {{s.status}}',
-                        start: '{{s.starts}}',
-                        end: '{{s.ends}}',
-                        allDay: false
-                      },
-                    {% endfor %}
-                {% endfor %}
-            {% endfor %}
-          ]
+          events:  function(info, successCallback, failureCallback) {
+              axios.get("{{apiUrl}}/calendar/"+info.startStr.substr(0,info.startStr.indexOf("T"))+"/"+info.endStr.substr(0,info.endStr.indexOf("T"))+"/{{resource.id}}")
+                  .then(function(details) {
+                      var events = [];
+                      details.data.dates.forEach(function(d) {
+                          d.resources.forEach(function(r) {
+                              r.slots.forEach(function(s) {
+                                  events.push({
+                                      title: r.resourceName+" - "+s.status,
+                                      start: s.starts,
+                                      end: s.ends,
+                                      allDay: false
+                                  });
+                              });
+                          });
+                      });
+                      successCallback(events);
+                  })
+                  .catch(failureCallback);
+          }
         });
         calendar.render();
       });
