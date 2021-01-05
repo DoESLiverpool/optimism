@@ -4,7 +4,7 @@
   "description": "Software to help run [DoES Liverpool](https://doesliverpool.com)",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
@@ -34,8 +34,11 @@
     "sqlite3": "^4.1.1"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^7.0.0-rc.0",
     "concurrently": "^5.2.0",
+    "mocha": "^8.2.1",
     "node-sass": "^4.14.1",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "selenium-webdriver": "^4.0.0-alpha.8"
   }
 }
