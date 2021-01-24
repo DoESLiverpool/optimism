@@ -4,7 +4,7 @@
   "description": "Software to help run [DoES Liverpool](https://doesliverpool.com)",
   "main": "app.js",
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --recursive --exit --timeout 3500",
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",

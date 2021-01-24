@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
+    console.log(req.body)
     res.json({
         source: req.baseUrl,
         method: req.method,

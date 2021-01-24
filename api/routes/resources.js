@@ -4,7 +4,7 @@ const knex = require('../db');
 const router = express.Router()
 module.exports = router;
 
-router.get('/:resourceId?', function(req, res) {
+router.get('/:resourceId?', async (req, res) => {
 
     let query = knex.select('resources.id AS id', 'resources.name AS name', 'resource_types.name AS resourceTypeName')
                     .from('resources')
@@ -23,14 +23,13 @@ router.get('/:resourceId?', function(req, res) {
     query.then(function (resources) {
         if (singleResult) {
             if (resources.length == 0) {
-                res.status(404);
-                res.json({message: 'No such resource'});
+                res.status(404).send('No such resource');
             } else {
                 res.json(resources[0]);
             }
         }
         else {
-            res.json(resources);
+            res.status(200).send(resources);
         }
     })
     .catch(function(error) {

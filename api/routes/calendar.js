@@ -1,6 +1,7 @@
 const express = require('express');
 const knex = require('../db');
 const moment = require('moment');
+const checkDay = require('../helpers/checkDay')
 
 const router = express.Router()
 module.exports = router;
@@ -120,10 +121,10 @@ router.get('/:startDate/:endDate/:resourceId', function (req, res) {
         });
 });
 
-function checkDay(date, slot) {
-    // isoWeekday returns a number between
-    // 1 (Monday) and 7 (Sunday).
-    isoDay = date.isoWeekday();
+// function checkDay(date, slot) {
+//     // isoWeekday returns a number between
+//     // 1 (Monday) and 7 (Sunday).
+//     isoDay = date.isoWeekday();
 
-    return true;
-}
+//     return true;
+// }

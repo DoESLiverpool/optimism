@@ -16,3 +16,5 @@ app.use('/api/calendar', calendarRoutes);
 app.use('/api/slots', slotRoutes);
 
 app.listen(port, () => console.log(`Optimism api listening on port ${port}.`))
+
+module.exports = app
