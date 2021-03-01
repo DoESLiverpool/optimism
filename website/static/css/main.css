@@ -1437,7 +1437,15 @@ A VERTICAL event
   border-color: #87d836;
 }
 
+.booked {
+  background-color: #c73232;
+}
+
 .fc-event-past {
   background-color: #9dc7f2;
+}
+
+.fc-event-past.booked {
+  background-color: #ff887a;
 }
 

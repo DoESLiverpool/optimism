@@ -16,8 +16,10 @@
             console.log('Event: ' + info.event.title);
             console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
             console.log('View: ' + info.view.type);
+            console.log(info);
 
-            if (info.el.classList.contains('fc-event-past') == false) {
+            if ((info.el.classList.contains('fc-event-past') == false) &&
+                (info.el.classList.contains('booked') == false)) {
               // It's a slot we can select
               // FIXME We'll need to allow multiple slots for room bookings...
               // FIXME What happens if we choose a slot, then move forwards a week and come back?
@@ -29,7 +31,11 @@
               chosenSlot = info;
               chosenSlot.el.classList.add('chosen-booking');
             } else {
-              console.log("Tried to select a slot in the past!");
+              if (info.el.classList.contains('fc-event-past') == false) {
+                console.log("Tried to select a slot in the past!");
+              } else {
+                console.log("Tried to select a slot that's booked!");
+              }
             }
           },
           events:  function(info, successCallback, failureCallback) {
@@ -43,7 +49,8 @@
                                       title: r.resourceName+" - "+s.status,
                                       start: s.starts,
                                       end: s.ends,
-                                      allDay: false
+                                      allDay: false,
+                                      classNames: [s.status]
                                   });
                               });
                           });
