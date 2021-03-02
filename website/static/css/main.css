@@ -1,4 +1,6 @@
 
+/* I think all the items below are a copy of the FullCalendar.io CSS - AMc */
+
 /* classes attached to <body> */
 
 .fc-not-allowed,
@@ -1426,4 +1428,23 @@ A VERTICAL event
   .fc-theme-bootstrap a:not([href]) {
     color: inherit; /* natural color for navlinks */
   }
+
+
+/* Optimism-specific customisations */
+
+/* Styling for a booking slot when it's selected */
+.chosen-booking {
+  background-color: #87d836;
+  border-color: #87d836;
+}
+
+/* Styling for slots which are already booked and so can't be chosen */
+.booked {
+  background-color: #c73232;
+  border-color: #c73232;
+}
+
+/* Slots that weren't booked or were booked but which are in the past and so can't be chosen */
+.fc-event-past { background-color: #9dc7f2; }
+.fc-event-past.booked { background-color: #ff887a; }
 

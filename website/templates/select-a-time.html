@@ -5,11 +5,39 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src='/scripts/main.js'></script>
     <script>
+      // Keep tabs on the slot that's been chosen
+      var chosenSlot = undefined;
 
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
           initialView: 'timeGridWeek',
+          eventClick: function(info) {
+            console.log('Event: ' + info.event.title);
+            console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            console.log('View: ' + info.view.type);
+            console.log(info);
+
+            if ((info.el.classList.contains('fc-event-past') == false) &&
+                (info.el.classList.contains('booked') == false)) {
+              // It's a slot we can select
+              // FIXME We'll need to allow multiple slots for room bookings...
+              // FIXME What happens if we choose a slot, then move forwards a week and come back?
+              // Unselect any existing slot
+              if (chosenSlot) {
+                chosenSlot.el.classList.remove('chosen-booking');
+              }
+              // Select the new slot
+              chosenSlot = info;
+              chosenSlot.el.classList.add('chosen-booking');
+            } else {
+              if (info.el.classList.contains('fc-event-past') == false) {
+                console.log("Tried to select a slot in the past!");
+              } else {
+                console.log("Tried to select a slot that's booked!");
+              }
+            }
+          },
           events:  function(info, successCallback, failureCallback) {
               axios.get("{{apiUrl}}/calendar/"+info.startStr.substr(0,info.startStr.indexOf("T"))+"/"+info.endStr.substr(0,info.endStr.indexOf("T"))+"/{{resource.id}}")
                   .then(function(details) {
@@ -21,7 +49,8 @@
                                       title: r.resourceName+" - "+s.status,
                                       start: s.starts,
                                       end: s.ends,
-                                      allDay: false
+                                      allDay: false,
+                                      classNames: [s.status]
                                   });
                               });
                           });
@@ -62,24 +91,14 @@
         <div id="calendar">
         </div>
 
-        <div class="calendar">
-            {% for d in calendar.dates %}
-                {% for r in d.resources %}
-                    <p>{{ d.date }} Resource name: {{r.resourceName}}</p>
-                    {% for s in r.slots %}
-                      <p>{{s.starts}} - {{s.ends}} {{s.status}}</p>
-                    {% endfor %}
-                {% endfor %}
-            {% endfor %}
+        <div class="container">
+            <form method="GET" action="/your-details">
+                <input type="hidden" name="start" value="" />
+                <input type="hidden" name="finish" value="" />
+                <input type="hidden" name="resource" value="{{resource.id}}" />
+                <input type="submit" class="btn btn-primary" role="button" name="submit" value="Provide your details &raquo;" />
+            </form>
         </div>
-
-        <div class="mock-block">
-            <h3>UI to display and select available slots for the resource to go here</h3>
-        </div>
-
-        <a class="btn btn-primary" href="/your-details" role="button">
-            Provide your details &raquo;
-        </a>
 
     </div> <!-- /container -->
 
