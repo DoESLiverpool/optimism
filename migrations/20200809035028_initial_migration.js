@@ -1,6 +1,10 @@
 
 exports.up = function (knex) {
   return knex.schema
+    .createTable('resource_types', function (t) {
+      t.increments('id').primary();
+      t.string('name');
+    })
     .createTable('resources', function (t) {
       t.increments('id').primary();
       t.integer('resource_type_id').references('resource_types.id');
@@ -20,10 +24,6 @@ exports.up = function (knex) {
       t.integer('resource_id').references('resources.id');
       t.integer('slot_id').references('slots.id');
       t.primary(['resource_id', 'slot_id']);
-    })
-    .createTable('resource_types', function (t) {
-      t.increments('id').primary();
-      t.string('name');
     })
     .createTable('bookings', function (t) {
       t.increments('id').primary();
