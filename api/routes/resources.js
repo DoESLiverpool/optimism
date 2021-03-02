@@ -23,8 +23,7 @@ router.get('/:resourceId?', function(req, res) {
     query.then(function (resources) {
         if (singleResult) {
             if (resources.length == 0) {
-                res.status(404);
-                res.json({message: 'No such resource'});
+                res.status(404).send('No such resource');
             } else {
                 res.json(resources[0]);
             }
