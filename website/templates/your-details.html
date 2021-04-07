@@ -18,14 +18,27 @@
 
         <div class="container">
             <h3>Booking Details</h3>
-            <p>Booking {{resource.name}} from {{startTime}} to {{endTime}}</p>
+            <p>Booking {{resource.name}} from {{friendlyStartTime}} to {{friendlyEndTime}}</p>
+            <form method="POST" action="/confirmation" id="enter-details-form">
+                <input type="hidden" name="start" value="{{startTime}}" />
+                <input type="hidden" name="finish" value="{{endTime}}" />
+                <input type="hidden" name="resource" value="{{resource.id}}" />
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" name="name" placeholder="Your name here" value="" required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" name="email" placeholder="Where we should email your booking" value="" required="true" />
+                </div>
+                <div class="form-group">
+                    <label for="notes">Any notes:</label>
+                    <textarea class="form-control" name="notes" placeholder="Any messages you want to include" value=""></textarea>
+                </div>
+                <div class="form-group">
+                <input type="submit" class="btn btn-primary" role="button" name="submit" value="Complete your booking &raquo;" />
+            </form>
         </div> 
-
-        <div class="mock-block">
-            <h3>Form to collect email, name, notes to go here</h3>
-        </div>
-
-        <a class="btn btn-primary" href="/confirmation">Complete your booking</a>
 
     </div> <!-- /container -->
 
