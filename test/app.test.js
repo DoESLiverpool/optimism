@@ -25,11 +25,20 @@ describe('app.js integration test', () => {
         expect(response.status).to.equal(200)
    });
   
-   it('Returns resource values when valid resource is entered', async () => {
+   it('Checks resource type is json when valid resource is entered', async () => {
     const response = await request(app)
-      .get('api/resources/5')
+      .get('/api/resources/5')
 
-       expect(response).to.be.html;
+       expect(response.status).to.equal(200)
+       expect(response).to.be.json;
+       // expect(response.body).to.equal('"id":5,"name":"Hot Desk","resourceTypeName":"hot-desk"');
+       expect(response.body).to.have.property("id");
+       expect(response.body.id).to.equal(5);
+       expect(response.body).to.have.property("name");
+       expect(response.body.name).to.equal("Hot Desk");
+       expect(response.body).to.have.property("resourceTypeName");
+       expect(response.body.resourceTypeName).to.equal("hot-desk");
+
    });
 
    it('Returns a 404 status on invalid /calendar endpoint', async () => {
