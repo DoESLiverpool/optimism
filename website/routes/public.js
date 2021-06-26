@@ -1,5 +1,6 @@
 const express = require('express');
 const axios = require('axios');
+const moment = require('moment');
 const utilities = require('../utilities');
 const settings = require('../settings');
 
@@ -33,6 +34,9 @@ router.get('/your-details', function(req, res) {
     axios.get(resourceUrl)
         .then(function (response) {
             templateVariables.resource = response.data;
+            // Create nicer-looking date/times for display
+            templateVariables.friendlyStartTime = moment(startTime).format('llll');
+            templateVariables.friendlyEndTime = moment(endTime).format('llll');
             res.render('your-details.html', templateVariables);
         })
         .catch(function (error) {
@@ -43,6 +47,14 @@ router.get('/your-details', function(req, res) {
         });
 });
 
-router.get('/confirmation', function(req, res) {
+router.post('/confirmation', function(req, res) {
+    // Check that we've got the relevant info:
+    //   resource
+    //   start
+    //   finish
+    //   name
+    //   email
+    //   notes 
+    // Then call the API to make the booking
     res.render('confirmation.html');
 });

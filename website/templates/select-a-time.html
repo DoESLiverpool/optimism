@@ -30,6 +30,10 @@
               // Select the new slot
               chosenSlot = info;
               chosenSlot.el.classList.add('chosen-booking');
+              // Store the info in the form to move to the next step
+              $('input[name=start]')[0].value = chosenSlot.event.startStr;
+              $('input[name=finish]')[0].value = chosenSlot.event.endStr;
+              $('input[name=submit]')[0].disabled = false;
             } else {
               if (info.el.classList.contains('fc-event-past') == false) {
                 console.log("Tried to select a slot in the past!");
@@ -75,8 +79,8 @@
             Make a booking
         </h1>
         <h2>
-            <small class="text-muted"> {{resource.name}}</small><br>
-            Select when you want this    
+            <small class="text-muted">Step 2 of 3</small><br>
+            Select when you want this resource
         </h2>
     </div>
     </div>
@@ -92,11 +96,11 @@
         </div>
 
         <div class="container">
-            <form method="GET" action="/your-details">
+            <form method="GET" action="/your-details" id="enter-details-form">
                 <input type="hidden" name="start" value="" />
                 <input type="hidden" name="finish" value="" />
                 <input type="hidden" name="resource" value="{{resource.id}}" />
-                <input type="submit" class="btn btn-primary" role="button" name="submit" value="Provide your details &raquo;" />
+                <input type="submit" disabled="true" class="btn btn-primary" role="button" name="submit" value="Provide your details &raquo;" />
             </form>
         </div>
 
