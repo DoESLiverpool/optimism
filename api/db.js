@@ -1,7 +1,11 @@
 var knex = require('knex')({
-    client: 'sqlite3',
+    client: 'pg',
+    
     connection: {
-        filename: "./db/optimism.sqlite3"
+      host: 'optimism_db',
+      user: 'postgres',
+      password: 'topsecret',
+      database: 'postgres'
     },
     useNullAsDefault: true
 });

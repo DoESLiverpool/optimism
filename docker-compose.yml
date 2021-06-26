@@ -1,0 +1,22 @@
+db:
+  image: postgres
+  container_name: optimism_db
+  restart: always
+  environment:
+    POSTGRES_PASSWORD: topsecret
+  volumes:
+    - ./db/optimism-production:/var/lib/postgresql/data
+api:
+  build: api/
+  container_name: optimism_api
+  ports:
+    - 3001:3001
+  links:
+    - db
+website:
+  build: website/
+  container_name: optimism_website
+  ports:
+    - 3000:3000
+  links:
+    - api
