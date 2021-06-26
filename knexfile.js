@@ -20,4 +20,14 @@ module.exports = {
       directory: __dirname + '/seeds/testing'
     }
   }
+  production: {
+    client: 'pg',
+
+    connection: {
+      host: 'optimism_db',
+      user: 'postgres',
+      password: 'topsecret',
+      database: 'postgres'
+    }
+  },
 };
