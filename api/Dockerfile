@@ -26,6 +26,9 @@ RUN npm install
 COPY app.js app.js
 COPY db.js db.js
 COPY routes routes
+COPY migrations migrations
+COPY seeds seeds
+COPY knexfile.js knexfile.js
 
 # How we want to start the server
 CMD ["node", "/home/node/app/app.js"]
