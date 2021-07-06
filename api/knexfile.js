@@ -18,6 +18,9 @@ module.exports = {
       user: 'postgres',
       password: 'topsecret',
       database: 'postgres'
+    },
+    seeds: {
+      directory: __dirname + '/seeds/production'
     }
   },
 };
