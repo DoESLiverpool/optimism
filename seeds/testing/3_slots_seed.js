@@ -1,10 +1,7 @@
 
 exports.seed = function(knex) {
   // Deletes ALL existing entries
-  return knex('slots')
-   .then(function () {
-      // Deleted ALL existing entries
-      return knex('slots').del()})
+  return knex('slots').del()
     .then(function () {
       // Inserts seed entries
       return knex('slots').insert([
