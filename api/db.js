@@ -1,9 +1,9 @@
-var knex = require('knex')({
-    client: 'sqlite3',
-    connection: {
-        filename: "./db/optimism.sqlite3"
-    },
-    useNullAsDefault: true
-});
+var environment = process.env.NODE_ENV || 'development';
+var config = require('../knexfile.js')[environment];
+console.log('db test');
+console.log(process.env.NODE_ENV);
 
-module.exports = knex;
+useNullAsDefault: true;
+
+module.exports = require('knex')(config);
+

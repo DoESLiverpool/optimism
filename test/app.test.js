@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'testing';
+
 var chai = require("chai"), 
 	chaiHttp = require('chai-http');
 chai.use(chaiHttp);
@@ -31,7 +33,6 @@ describe('app.js integration test', () => {
 
        expect(response.status).to.equal(200)
        expect(response).to.be.json;
-       // expect(response.body).to.equal('"id":5,"name":"Hot Desk","resourceTypeName":"hot-desk"');
        expect(response.body).to.have.property("id");
        expect(response.body.id).to.equal(5);
        expect(response.body).to.have.property("name");
@@ -39,6 +40,15 @@ describe('app.js integration test', () => {
        expect(response.body).to.have.property("resourceTypeName");
        expect(response.body.resourceTypeName).to.equal("hot-desk");
 
+   });
+
+   it('Returns all resources', async () => {
+     const response = await request(app)
+       .get('/api/resources') 
+       expect(response.status).to.equal(200);
+       expect(response.body).to.be.json;
+       expect(response.body).to.be.a('array');
+       expect(response.body).length.to.equal(5);
    });
 
    it('Returns a 404 status on invalid /calendar endpoint', async () => {
