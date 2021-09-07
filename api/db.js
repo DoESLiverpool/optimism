@@ -1,11 +1,6 @@
-var knex = require('knex')({
-    client: 'pg',
-    
-    connection: {
-      host: 'optimism_db',
-      user: 'postgres',
-      password: 'topsecret',
-      database: 'postgres'
-    },
-    useNullAsDefault: true
-});
+var environment = process.env.NODE_ENV || 'development';
+var config = require('./knexfile.js')[environment];
+
+useNullAsDefault: true;
+
+module.exports = require('knex')(config);

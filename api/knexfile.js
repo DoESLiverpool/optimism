@@ -6,6 +6,9 @@ module.exports = {
     connection: {
       filename: './db/optimism.sqlite3'
     },
+    migrations: {
+      directory: __dirname + '/migrations',
+    },
     seeds: {
       directory: __dirname + '/seeds/development'
     }
@@ -28,6 +31,9 @@ module.exports = {
       user: 'postgres',
       password: 'topsecret',
       database: 'postgres'
+    },
+    migrations: {
+      directory: __dirname + '/migrations',
     },
     seeds: {
       directory: __dirname + '/seeds/production'
