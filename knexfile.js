@@ -1,23 +1,5 @@
-module.exports = {
+// This file is to allow `knex` to run in the root, but pull in the config from inside `/api`
 
-  development: {
-    client: 'sqlite3',
-    
-    connection: {
-      filename: './db/optimism.sqlite3'
-    },
-    seeds: {
-      directory: __dirname + '/seeds/development'
-    }
-  },
-  testing: {
-    client: 'sqlite3',
-    
-    connection: {
-      filename: './db/optimism_test.sqlite3'
-    },
-    seeds: {
-      directory: __dirname + '/seeds/testing'
-    }
-  }
-};
+actual_knexfile = require('./api/knexfile.js')
+
+module.exports = actual_knexfile
