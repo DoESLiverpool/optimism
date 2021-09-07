@@ -19,6 +19,9 @@ module.exports = {
     connection: {
       filename: './db/optimism_test.sqlite3'
     },
+    migrations: {
+      directory: __dirname + '/migrations',
+    },
     seeds: {
       directory: __dirname + '/seeds/testing'
     }
