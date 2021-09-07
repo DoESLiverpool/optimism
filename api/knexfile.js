@@ -22,7 +22,7 @@ module.exports = {
     seeds: {
       directory: __dirname + '/seeds/testing'
     }
-  }
+  },
   production: {
     client: 'pg',
 
@@ -38,5 +38,5 @@ module.exports = {
     seeds: {
       directory: __dirname + '/seeds/production'
     }
-  },
+  }
 };
