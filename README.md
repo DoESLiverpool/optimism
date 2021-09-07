@@ -56,3 +56,13 @@ The `concurrently` command is used to start more than one command concurrently. 
 The `website` and `api` folders contain code for the frontend website and the backend api site. Ports are hard-coded at the moment, with website starting at port 3000 and api starting on 3001.
 
 The `bootstrap` folder contains the site scss file (optimism.scss) and a subfolder (scss) containing scss for bootstrap 4.5.1.
+
+## Docker version
+
+For production we're running the `api` and `website` components as separate Docker containers, with an off-the-shelf Postgres container to provide the database.
+
+Their interactions are orchestrated with `docker-compose`, so getting it running should just be a case of running:
+  * `docker-compose build`
+  * `docker-compose up`
+
+To run any database migrations, once things are running then run: `docker-compose exec api npx knex migrate:latest --env production`
