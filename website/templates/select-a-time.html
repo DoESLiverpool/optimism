@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block header %}
+    <link href='/css/main.css' rel='stylesheet' />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src='/scripts/main.js'></script>
+    <script>
+      // Keep tabs on the slot that's been chosen
+      var chosenSlot = undefined;
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'timeGridWeek',
+          eventClick: function(info) {
+            console.log('Event: ' + info.event.title);
+            console.log('Coordinates: ' + info.jsEvent.pageX + ',' + info.jsEvent.pageY);
+            console.log('View: ' + info.view.type);
+            console.log(info);
+
+            if ((info.el.classList.contains('fc-event-past') == false) &&
+                (info.el.classList.contains('booked') == false)) {
+              // It's a slot we can select
+              // FIXME We'll need to allow multiple slots for room bookings...
+              // FIXME What happens if we choose a slot, then move forwards a week and come back?
+              // Unselect any existing slot
+              if (chosenSlot) {
+                chosenSlot.el.classList.remove('chosen-booking');
+              }
+              // Select the new slot
+              chosenSlot = info;
+              chosenSlot.el.classList.add('chosen-booking');
+              // Store the info in the form to move to the next step
+              $('input[name=start]')[0].value = chosenSlot.event.startStr;
+              $('input[name=finish]')[0].value = chosenSlot.event.endStr;
+              $('input[name=submit]')[0].disabled = false;
+            } else {
+              if (info.el.classList.contains('fc-event-past') == false) {
+                console.log("Tried to select a slot in the past!");
+              } else {
+                console.log("Tried to select a slot that's booked!");
+              }
+            }
+          },
+          events:  function(info, successCallback, failureCallback) {
+              axios.get("{{apiUrl}}/calendar/"+info.startStr.substr(0,info.startStr.indexOf("T"))+"/"+info.endStr.substr(0,info.endStr.indexOf("T"))+"/{{resource.id}}")
+                  .then(function(details) {
+                      var events = [];
+                      details.data.dates.forEach(function(d) {
+                          d.resources.forEach(function(r) {
+                              r.slots.forEach(function(s) {
+                                  events.push({
+                                      title: r.resourceName+" - "+s.status,
+                                      start: s.starts,
+                                      end: s.ends,
+                                      allDay: false,
+                                      classNames: [s.status]
+                                  });
+                              });
+                          });
+                      });
+                      successCallback(events);
+                  })
+                  .catch(failureCallback);
+          }
+        });
+        calendar.render();
+      });
+
+    </script>
+{% endblock %}
+
+{% block main %}
+
+<main role="main">
+    <div class="booking-step">
+    <div class="container">
+        <h1>
+            Make a booking
+        </h1>
+        <h2>
+            <small class="text-muted">Step 2 of 3</small><br>
+            Select when you want this resource
+        </h2>
+    </div>
+    </div>
+    <div class="container">
+
+        <div class="calendar">
+            <p>{{title}}</p>
+            <p>{{thing.name}}</p>
+            <p>{{thing.description}}</p>
+        </div>
+
+        <div id="calendar">
+        </div>
+
+        <div class="container">
+            <form method="GET" action="/your-details" id="enter-details-form">
+                <input type="hidden" name="start" value="" />
+                <input type="hidden" name="finish" value="" />
+                <input type="hidden" name="resource" value="{{resource.id}}" />
+                <input type="submit" disabled="true" class="btn btn-primary" role="button" name="submit" value="Provide your details &raquo;" />
+            </form>
+        </div>
+
+    </div> <!-- /container -->
+
+</main>
+
+{% endblock %}

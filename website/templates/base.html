@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Booking - DoES Liverpool</title>
+    <link rel="stylesheet" href="/css/optimism.css">
+    {% block header %}
+        <!-- Custom code for the head -->
+    {% endblock %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/">
+            <img src="/images/does-logo.png" alt="Does Liverpool logo">
+            Booking system
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Other <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Links</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Here</a>
+                </li>
+            </ul>
+            <a href="/select-a-resource" class="btn btn-success my-2 my-sm-0">Make a booking</a>
+        </div>
+    </nav>
+
+    {% block main %}
+        <!-- All content goes here -->
+    {% endblock %}
+
+    <footer class="container">
+        <hr>
+        <p>&copy; DoES Liverpool 2020-2021</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=" crossorigin="anonymous"></script>
+    <script src="/scripts/bootstrap.bundle.min.js"></script>
+
+</html>

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<main role="main">
+    <div class="booking-step">
+        <div class="container">
+            <h1>
+                Make a booking
+            </h1>
+            <h2>
+                <small class="text-muted">Step 1 of 3</small><br>
+                Choose what you want to book
+            </h2>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row d-flex flex-wrap">
+            {% for resource in resources %}
+                <div class="col-md-4">
+                    <h3>
+                        {{ resource.name }}
+                        <br>
+                        <small class="text-muted">
+                            <span class="aka">{{resource.resourceTypeName}}</span>
+                        </small>
+                    </h3>
+                    <p>
+                        <a class="btn btn-primary" href="/select-a-time?resource={{resource.id}}" role="button">
+                            Book ({{resource.name}})
+                            &raquo;
+                        </a>
+                    </p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+
+{% endblock %}
