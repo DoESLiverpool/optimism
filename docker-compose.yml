@@ -6,17 +6,20 @@ db:
     POSTGRES_PASSWORD: topsecret
   volumes:
     - ./db/optimism-production:/var/lib/postgresql/data
+  restart: always
 api:
   build: api/
   container_name: optimism_api
   ports:
-    - 3001:3001
+    - 127.0.0.1:3001:3001
   links:
     - db
+  restart: always
 website:
   build: website/
   container_name: optimism_website
   ports:
-    - 3000:3000
+    - 127.0.0.1:3000:3000
   links:
     - api
+  restart: always
