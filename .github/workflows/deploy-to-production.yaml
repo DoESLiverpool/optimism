@@ -1,0 +1,29 @@
+name: Deploy to production server when master is updated
+
+on:
+  push:
+    branches: [ master ]
+
+  # Allow it to be run manually from the Github Actions tab
+  workflow_dispatch:
+
+jobs:
+  # We should add a job to run the tests first...
+
+  deploy:
+    name: Deploy to organisers.doesliverpool.com
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Do deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST_PROD }}
+          username: ${{ secrets.REMOTE_USER_PROD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+          port: 22
+          script: |
+            cd optimism
+            git pull
+            docker-compose build
+            docker-compose restart
