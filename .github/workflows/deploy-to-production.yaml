@@ -26,4 +26,5 @@ jobs:
             cd optimism
             git pull
             docker-compose build
-            docker-compose restart
+            docker-compose down
+            docker-compose start
