@@ -45,6 +45,9 @@ The following commands are defined in package.json:
 
 `npm run dev-all` concurrently starts the website, api and css-watch
 
+`npm run test` (or `npm tests` or `npm t`) runs .js files in the test subfolder. You can use one of the existing files e.g. app.test.js as a template.  
+
+
 The `nodemon` commmand is used to monitor code changes in each of the website and api projects and restart these as required.
 
 The `concurrently` command is used to start more than one command concurrently. The output from all the commands is sent to the same terminal and is prefixed with a name to identify output.
