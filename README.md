@@ -68,3 +68,5 @@ Their interactions are orchestrated with `docker-compose`, so getting it running
   * `docker-compose up`
 
 To run any database migrations, once things are running then run: `docker-compose exec api npx knex migrate:latest --env production`
+
+Any time things are pushed to the `master` branch, the [live site will automatically deploy the new version](https://github.com/DoESLiverpool/optimism/issues/48).
