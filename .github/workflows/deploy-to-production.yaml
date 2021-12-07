@@ -27,4 +27,4 @@ jobs:
             git pull
             docker-compose build
             docker-compose down
-            docker-compose start
+            docker-compose up -d
