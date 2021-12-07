@@ -45,7 +45,7 @@ The following commands are defined in package.json:
 
 `npm run dev-all` concurrently starts the website, api and css-watch
 
-`npm run test` (or `npm tests` or `npm t`) runs .js files in the test subfolder. You can use one of the existing files e.g. app.test.js as a template.  
+`npm run test` (or `npm tests` or `npm t`) runs .js files in the test subfolder. You can use one of the existing files e.g. app.test.js as a template (first set the NODE_ENV environment variable to 'testing' and run `npx knex install:latest` to use the latest version of the test database)
 
 
 The `nodemon` commmand is used to monitor code changes in each of the website and api projects and restart these as required.
