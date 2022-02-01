@@ -17,13 +17,13 @@ module.exports = {
     client: 'sqlite3',
     
     connection: {
-      filename: './db/optimism_test.sqlite3'
+      filename: '/home/jackie/sandbox/github/optimism/db/optimism_test.sqlite3'
     },
     migrations: {
-      directory: __dirname + '/migrations',
+      directory: '/home/jackie/sandbox/github/optimism/api/migrations',
     },
     seeds: {
-      directory: __dirname + '/seeds/testing'
+      directory: '/home/jackie/sandbox/github/optimism/api/seeds/testing'
     }
   },
   production: {

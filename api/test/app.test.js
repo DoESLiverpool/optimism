@@ -2,10 +2,24 @@ const {chai} = require("chai");
 const expect = require("chai").expect;
 const request = require("supertest");
 
-const app = require("../api/app");
+var config = require('../knexfile.js')['testing'];
+var knex = require('knex')(config);
+const app = require("../app");
+
 
 describe('app.js integration test', () => {
-   it('Returns a 404 status on invalid /resource endpoint', async () => {
+   before(function() {
+    //  console.log('About to run migration');
+    //  console.log(config);
+    //  knex.migrate.latest();
+    //  console.log('Finished running migration');
+   });
+
+   it('Returns a 404 status on invalid /resource endpoint...', async () => {
+    console.log('About to run migration');
+    console.log(config);
+    knex.migrate.latest();
+    console.log('Finished running migration');
     const response = await request(app)
       .get('/api/resources/nothing')
 
