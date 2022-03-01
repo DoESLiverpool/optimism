@@ -8,7 +8,7 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
 ## Install
 
-NOTE: You'll need to be using `npm` version 7 or above for this to work.
+NOTE: You'll need to be using `npm` version 7 or above for this to work, **and** version 14 or *earlier* of NodeJS because `node-sass` does not support version 16 yet.
 
  1. Install the dependencies `npm install`
  1. Set up the database `npx knex migrate:latest` (or if there have been any changes to the database structure, this will run the migrations)
