@@ -12,8 +12,8 @@
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
-    "css": "sass bootstrap/optimism.scss -o website/static/css",
-    "css-watch": "sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
+    "css": "sass bootstrap/optimism.scss:website/static/css/optimism.css",
+    "css-watch": "sass bootstrap/optimism.scss:website/static/css/optimism.css --watch",
     "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
   },
   "repository": {
