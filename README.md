@@ -28,8 +28,8 @@ The following commands are defined in package.json:
 "website": "nodemon --watch website website/app.js",
 "api": "nodemon --watch api api/app.js",
 "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
-"css": "node-sass bootstrap/optimism.scss -o website/static/css",
-"css-watch": "node-sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
+"css": "sass bootstrap/optimism.scss -o website/static/css",
+"css-watch": "sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
 "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
 ```
 
@@ -51,7 +51,7 @@ The `nodemon` commmand is used to monitor code changes in each of the website an
 
 The `concurrently` command is used to start more than one command concurrently. The output from all the commands is sent to the same terminal and is prefixed with a name to identify output.
 
-`node-sass` is used to compile scss.
+`sass` is used to compile scss.
 
 ## Project structure
 

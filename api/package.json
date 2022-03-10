@@ -8,8 +8,8 @@
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
-    "css": "node-sass bootstrap/optimism.scss -o website/static/css",
-    "css-watch": "node-sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
+    "css": "sass bootstrap/optimism.scss -o website/static/css",
+    "css-watch": "sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
     "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
   },
   "repository": {
@@ -41,7 +41,7 @@
   "devDependencies": {
     "sqlite3": "^5.0.0",
     "concurrently": "^5.2.0",
-    "node-sass": "^4.14.1",
+    "sass": "^1.49.9",
     "nodemon": "^2.0.4"
   }
 }
