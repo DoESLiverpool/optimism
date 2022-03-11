@@ -1,7 +1,6 @@
 db:
   image: postgres
   container_name: optimism_db
-  restart: always
   environment:
     POSTGRES_PASSWORD: topsecret
   volumes:
