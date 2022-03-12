@@ -31,6 +31,10 @@ COPY routes routes
 COPY static static
 COPY templates templates
 
+# Build the css files from scss source
+COPY bootstrap bootstrap
+RUN npm run css
+
 # How we want to start the server
 CMD ["node", "/home/node/app/app.js"]
 
