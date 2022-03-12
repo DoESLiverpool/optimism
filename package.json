@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "description": "Software to help run [DoES Liverpool](https://doesliverpool.com)",
   "workspaces": [
-    "optimism-api",
-    "optimism-website"
+    "api",
+    "website"
   ],
   "main": "app.js",
   "scripts": {
