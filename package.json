@@ -14,7 +14,7 @@
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
     "css": "sass website/scss/optimism.scss:website/static/css/optimism.css",
     "css-watch": "sass website/scss/optimism.scss:website/static/css/optimism.css --watch",
-    "dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
+    "dev": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
   },
   "repository": {
     "type": "git",
