@@ -32,7 +32,7 @@ COPY static static
 COPY templates templates
 
 # Build the css files from scss source
-COPY bootstrap bootstrap
+COPY scss scss
 RUN npm run css
 
 # How we want to start the server
