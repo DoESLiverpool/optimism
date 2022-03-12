@@ -4,7 +4,7 @@ module.exports = {
     client: 'sqlite3',
     
     connection: {
-      filename: './db/optimism.sqlite3'
+      filename: '../databases/optimism_development.sqlite3'
     },
     migrations: {
       directory: __dirname + '/migrations',
@@ -17,7 +17,7 @@ module.exports = {
     client: 'sqlite3',
     
     connection: {
-      filename: './db/optimism_test.sqlite3'
+      filename: '../databases/optimism_test.sqlite3'
     },
     migrations: {
       directory: __dirname + '/migrations',
