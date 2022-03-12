@@ -1,11 +1,10 @@
 db:
   image: postgres
   container_name: optimism_db
-  restart: always
   environment:
     POSTGRES_PASSWORD: topsecret
   volumes:
-    - ./db/optimism-production:/var/lib/postgresql/data
+    - ./databases/optimism_production:/var/lib/postgresql/data
   restart: always
 api:
   build: api/
