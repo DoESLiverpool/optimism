@@ -17,11 +17,11 @@ describe('API', function () {
     });
   });
   describe('/api/calendar', () => {
-    it('Returns a 404 status on invalid /calendar endpoint', async () => {
+    it('returns an HTTP 404 status on missing dates and resource', async () => {
       const response = await request(app).get('/api/calendar/nothing');
       expect(response.status).to.equal(404);
     });
-    it('Returns a 200 status on valid /calendar endpoint', async () => {
+    it('returns an HTTP 200 status with valid dates and resource id', async () => {
       const response = await request(app).get('/api/calendar/2021-04-06/2021-04-14/1');
       expect(response.status).to.equal(200);
     });
