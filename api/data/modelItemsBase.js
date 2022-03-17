@@ -1,6 +1,7 @@
 class ModelItemsBase {
-    constructor(knex) {
-        this.knex = knex
+    constructor(model) {
+        this.model = model;
+        this.knex = model.knex;
     }
 }
 
