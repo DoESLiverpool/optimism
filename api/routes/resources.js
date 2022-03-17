@@ -1,15 +1,14 @@
 const express = require('express');
 const mainModel = require('../model');
-const router = express.Router()
+const router = express.Router();
+const validatedId = require('../data/validation');
 module.exports = router;
 
 router.get('/:resourceId?', async function (req, res) {
+    if (req.params.resourceId) {
+        let id = validatedId(req.params.resourceId);
 
-    const queryId = req.params.resourceId;
-
-    if (queryId) {
-        let id = Number(queryId);
-        if (!Number.isInteger(id) || id < 0) {
+        if (id == null) {
             res.status(400).send(`Resource id is not valid.`);
             return;
         }
