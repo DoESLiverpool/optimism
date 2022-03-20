@@ -1,22 +1,22 @@
 const express = require('express');
 const mainModel = require('../model');
 const router = express.Router();
-const validatedId = require('../data/validation');
+const { validatedId } = require('../data/validation');
 module.exports = router;
 
 router.get('/:resourceId?', async function (req, res) {
-    if (req.params.resourceId) {
-        let id = validatedId(req.params.resourceId);
+  if (req.params.resourceId) {
+    const id = validatedId(req.params.resourceId);
 
-        if (id == null) {
-            res.status(400).send(`Resource id is not valid.`);
-            return;
-        }
-
-        const resource = await mainModel.resources.get(id);
-        resource == null ? res.status(404).send('No such resource') : res.json(resource);
-    } else {
-        const resources = await mainModel.resources.getAll();
-        res.json(resources);
+    if (id == null) {
+      res.status(400).send('Resource id is not valid.');
+      return;
     }
+
+    const resource = await mainModel.resources.get(id);
+    resource == null ? res.status(404).send('No such resource') : res.json(resource);
+  } else {
+    const resources = await mainModel.resources.getAll();
+    res.json(resources);
+  }
 });
