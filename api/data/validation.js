@@ -1,9 +1,15 @@
-function validatedId(id) {
-    number = Number(id);
-    if (Number.isNaN(number) || !Number.isInteger(number) || number < 0) {
-        return null;
-    }
-    return number;
+const moment = require('moment');
+
+function validatedId (id) {
+  const number = Number(id);
+  if (Number.isNaN(number) || !Number.isInteger(number) || number < 0) {
+    return null;
+  }
+  return number;
 }
 
-module.exports = validatedId;
+function validatedDate (date) {
+  return moment(date);
+}
+
+module.exports = { validatedId, validatedDate };
