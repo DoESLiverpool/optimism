@@ -3,9 +3,9 @@ const ModelItemsBase = require('./modelItemsBase');
 class ResourceItems extends ModelItemsBase {
   static readQuery (knex) {
     return knex
-      .select('resources.id AS id', 'resources.name AS name', 'resource_types.name AS resourceTypeName')
-      .from('resources')
-      .join('resource_types', 'resources.resource_type_id', '=', 'resource_types.id');
+      .select('resources.id', 'resources.resource_type_id as resourceTypeId', 'resources.name', 'resources.capacity',
+        'resources.min_minutes as minimumBookingTime', 'resources.max_minutes as maximumBookingTime')
+      .from('resources');
   }
 
   get (id) {
@@ -16,7 +16,7 @@ class ResourceItems extends ModelItemsBase {
   }
 
   getAll () {
-    const query = ResourceItems.readQuery(this.knex).orderBy('id', 'asc');
+    const query = ResourceItems.readQuery(this.knex).orderBy('resources.id', 'asc');
     return query.then((resources) => { return resources; });
   }
 }
