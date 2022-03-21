@@ -1,29 +1,36 @@
-const { chai } = require("chai");
-const expect = require("chai").expect;
-const request = require("supertest");
-
-const app = require("../app");
+/* eslint-disable no-undef */
+const expect = require('chai').expect;
+const request = require('supertest');
+const app = require('../app');
 
 describe('API', function () {
   describe('/api/resources', () => {
-    it('returns an HTTP 400 status if an invalid resource id is provided', async () => {
-      const response = await request(app).get('/api/resources/not-an-integer');
-      expect(response.status).to.equal(400);
-      expect(response.error.text).to.equal("Resource id is not valid.");
-    });
-    it('returns an HTTP 200 status if no resource id is provided', async () => {
-      const response = await request(app).get('/api/resources/');
-      expect(response.status).to.equal(200);
+    const inputs = [
+      { description: 'valid resource id', resourceId: 1, httpStatusCode: 200 },
+      { description: 'invalid resource id', resourceId: -1, httpStatusCode: 400 },
+      { description: 'non-existant resource id', resourceId: 4000, httpStatusCode: 404 }
+    ];
+    inputs.forEach((input) => {
+      it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
+        const response = await request(app).get(`/api/resources/${input.resourceId}`);
+        expect(response.status).to.equal(input.httpStatusCode);
+      });
     });
   });
   describe('/api/calendar', () => {
-    it('returns an HTTP 404 status on missing dates and resource', async () => {
-      const response = await request(app).get('/api/calendar/nothing');
-      expect(response.status).to.equal(404);
-    });
-    it('returns an HTTP 200 status with valid dates and resource id', async () => {
-      const response = await request(app).get('/api/calendar/2021-04-06/2021-04-14/1');
-      expect(response.status).to.equal(200);
+    const inputs = [
+      { description: 'valid dates and resource id', startDate: '2022-03-17', endDate: '2022-03-18', resourceId: 1, httpStatusCode: 200 },
+      { description: 'invalid start date', startDate: '2022-17-03', endDate: '2022-17-04', resourceId: 1, httpStatusCode: 400 },
+      { description: 'invalid end date', startDate: '2022-03-17', endDate: '2022-', resourceId: 1, httpStatusCode: 400 },
+      { description: 'invalid resource id', startDate: '2022-03-17', endDate: '2022-03-18', resourceId: -1, httpStatusCode: 400 },
+      { description: 'start date > end date', startDate: '2022-03-18', endDate: '2022-03-17', resourceId: -1, httpStatusCode: 400 },
+      { description: 'non-existent resource id', startDate: '2022-03-17', endDate: '2022-03-18', resourceId: 4000, httpStatusCode: 404 }
+    ];
+    inputs.forEach((input) => {
+      it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
+        const response = await request(app).get(`/api/calendar/${input.startDate}/${input.endDate}/${input.resourceId}`);
+        expect(response.status).to.equal(input.httpStatusCode);
+      });
     });
   });
-})
+});
