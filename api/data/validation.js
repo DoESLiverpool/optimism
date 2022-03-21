@@ -9,7 +9,12 @@ function validatedId (id) {
 }
 
 function validatedDate (date) {
-  return moment(date);
+  try {
+    const result = moment(date, true);
+    return result.isValid() === true ? result : null;
+  } catch (error) {
+    return null;
+  }
 }
 
 module.exports = { validatedId, validatedDate };
