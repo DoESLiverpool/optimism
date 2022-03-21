@@ -34,6 +34,11 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   }
 
   const resource = await mainModel.resources.get(resourceId);
+
+  if (resource == null) {
+    res.status(404).send('No such resource.');
+    return;
+  }
   const slots = await mainModel.slots.getByResourceId(resource.id);
   const bookings = await mainModel.bookings.get(startDate, endDate, resource.id);
 
