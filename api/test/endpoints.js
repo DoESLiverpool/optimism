@@ -2,8 +2,17 @@
 const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../app');
+const environment = process.env.NODE_ENV || 'development';
+const config = require('../knexfile.js')[environment];
+const knex = require('knex')(config);
 
 describe('API', function () {
+  before(function () {
+    return knex.migrate.latest();
+  });
+  beforeEach(function () {
+    return knex.seed.run();
+  });
   describe('/api/resources', () => {
     const inputs = [
       { description: 'valid resource id', resourceId: 1, httpStatusCode: 200 },

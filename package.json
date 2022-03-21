@@ -8,7 +8,7 @@
   ],
   "main": "app.js",
   "scripts": {
-    "test-api": "mocha api --recursive --exit --timeout 3500 --require mocha-suppress-logs",
+    "test-api": "cross-env NODE_ENV=testing mocha api --recursive --exit --timeout 3500 --require mocha-suppress-logs",
     "website": "nodemon --watch website website/app.js",
     "api": "nodemon --watch api api/app.js",
     "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
+    "cross-env": "^7.0.3",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
