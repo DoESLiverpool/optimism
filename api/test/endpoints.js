@@ -2,9 +2,7 @@
 const expect = require('chai').expect;
 const request = require('supertest');
 const app = require('../app');
-const environment = process.env.NODE_ENV || 'development';
-const config = require('../knexfile.js')[environment];
-const knex = require('knex')(config);
+const knex = require('../db');
 
 describe('API', function () {
   before(function () {
