@@ -1,7 +1,7 @@
 const express = require('express');
 const mainModel = require('../model');
 const router = express.Router();
-const { validatedId } = require('../data/validation');
+const { validatedId } = require('../model/validation');
 module.exports = router;
 
 router.get('/:resourceId?', async function (req, res) {

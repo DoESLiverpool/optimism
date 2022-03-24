@@ -1,7 +1,7 @@
 const express = require('express');
 const mainModel = require('../model');
 const moment = require('moment');
-const { validatedId, validatedDate } = require('../data/validation');
+const { validatedId, validatedDate } = require('../model/validation');
 
 const router = express.Router();
 module.exports = router;
