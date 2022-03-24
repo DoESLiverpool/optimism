@@ -11,7 +11,7 @@ describe('API', function () {
   beforeEach(function () {
     return knex.seed.run();
   });
-  describe('/api/resources', () => {
+  describe('GET /api/resources/{id}', () => {
     const inputs = [
       { description: 'valid resource id', resourceId: 1, httpStatusCode: 200 },
       { description: 'invalid resource id', resourceId: -1, httpStatusCode: 400 },
@@ -21,6 +21,22 @@ describe('API', function () {
       it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
         const response = await request(app).get(`/api/resources/${input.resourceId}`);
         expect(response.status).to.equal(input.httpStatusCode);
+      });
+    });
+  });
+  describe('POST /api/resources', () => {
+    const inputs = [
+      {
+        description: 'valid resource item',
+        httpStatusCode: 200,
+        body: { resourceTypeId: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      }
+    ];
+    inputs.forEach((input) => {
+      it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
+        const response = await request(app).post('/api/resources').send(input.body);
+        expect(response.status).to.equal(input.httpStatusCode);
+        expect(response.body[0]).to.equal(7);
       });
     });
   });
