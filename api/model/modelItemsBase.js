@@ -5,6 +5,7 @@ class ModelItemsBase {
     this.tableName = tableName;
     this.primaryKeyColumn = primaryKeyColumn;
     this.otherColumns = otherColumns;
+    this.jsonToTableNames = this.getJsonToTableNames(otherColumns);
   }
 
   getSelectQuery () {
@@ -40,8 +41,28 @@ class ModelItemsBase {
   }
 
   insert (item) {
-    const query = this.getInsertQuery(item);
+    const itemWithColumnNames = this.convertJsonNamesToColumnNames(item);
+    const query = this.getInsertQuery(itemWithColumnNames);
     return query.then((results) => { return results; });
+  }
+
+  convertJsonNamesToColumnNames (jsonItem) {
+    const columnItem = {};
+    Object.keys(jsonItem).forEach(key => {
+      columnItem[this.jsonToTableNames[key]] = jsonItem[key];
+    });
+    return columnItem;
+  }
+
+  getJsonToTableNames (columns) {
+    const result = {};
+    columns.forEach(column => {
+      const parts = column.split('=');
+      const columnName = parts[0];
+      const jsonName = parts.length === 2 ? parts[1] : columnName;
+      result[jsonName] = columnName;
+    });
+    return result;
   }
 }
 
