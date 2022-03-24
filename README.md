@@ -55,6 +55,8 @@ The `concurrently` command is used to start more than one command concurrently. 
 
 `sass` is used to compile scss.
 
+`eslint` is installed as a dev dependency. To run it against the api project (as an example) run `npx eslint api`.
+
 ## Project structure
 
 The `website` and `api` folders contain code for the frontend website and the backend api site. Ports are hard-coded at the moment, with website starting at port 3000 and api starting on 3001.
