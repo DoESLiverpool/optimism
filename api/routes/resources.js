@@ -1,39 +1,32 @@
 const express = require('express');
-const knex = require('../db');
-
-const router = express.Router()
+const mainModel = require('../model');
+const router = express.Router();
+const { validatedId } = require('../data/validation');
 module.exports = router;
 
-router.get('/:resourceId?', function(req, res) {
+router.get('/:resourceId?', async function (req, res) {
+  if (req.params.resourceId) {
+    const id = validatedId(req.params.resourceId);
 
-    let query = knex.select('resources.id AS id', 'resources.name AS name', 'resource_types.name AS resourceTypeName')
-                    .from('resources')
-                    .join('resource_types', 'resources.resource_type_id', '=', 'resource_types.id' )
-                    .orderBy('resourceTypeName', 'asc')
-                    .orderBy('name', 'asc');
-
-    const id = req.params.resourceId;
-    let singleResult = false;
-
-    if (id) {
-        query.where('resources.id', id);
-        singleResult = true;
+    if (id == null) {
+      res.status(400).send('Resource id is not valid.');
+      return;
     }
 
-    query.then(function (resources) {
-        if (singleResult) {
-            if (resources.length == 0) {
-                res.status(404).send('No such resource');
-            } else {
-                res.json(resources[0]);
-            }
-        }
-        else {
-            res.json(resources);
-        }
-    })
-    .catch(function(error) {
-        res.status(500);
-        res.json({message: error});
-    });
+    const resource = await mainModel.resources.get(id);
+    if (resource == null) {
+      res.status(404).send('No such resource');
+    } else {
+      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      resource.resourceTypeName = resourceType.name;
+      res.json(resource);
+    }
+  } else {
+    const resources = await mainModel.resources.getAll();
+    for (const resource of resources) {
+      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      resource.resourceTypeName = resourceType.name;
+    }
+    res.json(resources);
+  }
 });
