@@ -1,15 +1,18 @@
 const ModelItemsBase = require('./modelItemsBase');
 
 class BookingItems extends ModelItemsBase {
-  static readQuery (knex) {
-    return knex
-      .select('bookings.id', 'bookings.resource_id as resourceId', 'bookings.email',
-        'bookings.name', 'bookings.notes', 'bookings.starts', 'bookings.ends')
-      .from('bookings');
+  constructor (model) {
+    super(model, 'bookings', 'id', [
+      'resource_id=resourceId',
+      'email',
+      'notes',
+      'starts',
+      'ends'
+    ]);
   }
 
   get (starts, ends, resourceId) {
-    const query = BookingItems.readQuery(this.knex)
+    const query = this.getSelectQuery()
       .join('resources', 'resources.id', '=', 'bookings.resource_id')
       .where('bookings.resource_id', '=', resourceId)
       .where('starts', '>=', starts.toISOString())

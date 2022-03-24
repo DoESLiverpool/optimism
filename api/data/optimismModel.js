@@ -6,6 +6,7 @@ const BookingItems = require('./bookingItems');
 class OptimismModel {
   constructor (knex) {
     this.knex = knex;
+
     this.resources = new ResourceItems(this);
     this.resourceTypes = new ResourceTypeItems(this);
     this.slots = new SlotItems(this);

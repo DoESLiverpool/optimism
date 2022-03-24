@@ -30,3 +30,9 @@ router.get('/:resourceId?', async function (req, res) {
     res.json(resources);
   }
 });
+
+router.post('/', async function (req, res) {
+  console.log(req.body);
+  const result = await mainModel.resources.insert(req.body);
+  res.json(result);
+});
