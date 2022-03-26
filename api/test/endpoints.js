@@ -8,8 +8,10 @@ describe('API', function () {
   before(function () {
     return knex.migrate.latest();
   });
-  beforeEach(function () {
-    return knex.seed.run();
+  beforeEach(async function () {
+    await knex.migrate.rollback();
+    await knex.migrate.latest();
+    await knex.seed.run();
   });
   describe('GET /api/resources/{id}', () => {
     const inputs = [
@@ -30,14 +32,32 @@ describe('API', function () {
         description: 'valid resource item',
         httpStatusCode: 200,
         body: { resourceTypeId: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'missing field in supplied resource item',
+        httpStatusCode: 400,
+        body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       }
     ];
     inputs.forEach((input) => {
       it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
         const response = await request(app).post('/api/resources').send(input.body);
         expect(response.status).to.equal(input.httpStatusCode);
-        expect(response.body[0]).to.equal(7);
       });
+    });
+    it('inserts the correct resource in the database', async () => {
+      const resource = {
+        resourceTypeId: 1,
+        name: 'post-test',
+        capacity: 123,
+        minimumBookingTime: 45,
+        maximumBookingTime: 67
+      };
+      const response = await request(app).post('/api/resources').send(resource);
+      const newId = response.body[0];
+      const newResource = await request(app).get(`/api/resources/${newId}`);
+      resource.id = newId;
+      expect(newResource.body).includes(resource);
     });
   });
   describe('/api/calendar', () => {
