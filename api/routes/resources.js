@@ -68,7 +68,7 @@ router.put('/', async function (req, res) {
     res.json(result);
   } catch (error) {
     console.log(`Error trying to PUT a resource: ${error}`);
-    res.status(500).send('Unexpected error trying to create a new resource');
+    res.status(500).send('Unexpected error trying to update a resource');
   }
 });
 
@@ -79,6 +79,11 @@ router.delete('/:id?', async function (req, res) {
     res.status(400).send('Resource id is not valid.');
     return;
   }
-  const result = await mainModel.resources.delete(id);
-  res.json(result);
+  try {
+    const result = await mainModel.resources.delete(id);
+    res.json(result);
+  } catch (error) {
+    console.log(`Error trying to DELETE a resource: ${error}`);
+    res.status(500).send('Unexpected error trying to delete a resource');
+  }
 });
