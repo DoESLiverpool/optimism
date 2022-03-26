@@ -3,6 +3,7 @@ const ModelIemsBase = require('./modelItemsBase');
 class SlotItems extends ModelIemsBase {
   constructor (model) {
     super(model, 'slots', 'id', [
+      'id',
       'name',
       'day',
       'starts',
