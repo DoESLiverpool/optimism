@@ -3,6 +3,7 @@ const ModelItemsBase = require('./modelItemsBase');
 class BookingItems extends ModelItemsBase {
   constructor (model) {
     super(model, 'bookings', 'id', [
+      'id',
       'resource_id=resourceId',
       'email',
       'notes',
