@@ -17,4 +17,34 @@ function validatedDate (date) {
   }
 }
 
-module.exports = { validatedId, validatedDate };
+function checkPostItemFields (item, modelItems) {
+  // Remove primary key.
+  const targetKeys = Object.keys(modelItems.jsonToTableNames).filter(key => key !== modelItems.primaryKeyColumn);
+  const itemKeys = Object.keys(item);
+  if (targetKeys.length !== itemKeys.length) {
+    return false;
+  }
+  for (const key of itemKeys) {
+    if (!targetKeys.includes(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function checkPutItemFields (item, modelItems) {
+  // This includes the primary key.
+  const targetKeys = Object.keys(modelItems.jsonToTableNames);
+  const itemKeys = Object.keys(item);
+  if (!itemKeys.includes(modelItems.primaryKeyColumn)) {
+    return false;
+  }
+  for (const key of itemKeys) {
+    if (key !== modelItems.primaryKeyColumn && !targetKeys.includes(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+module.exports = { validatedId, validatedDate, checkPostItemFields, checkPutItemFields };
