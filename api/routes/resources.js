@@ -1,37 +1,84 @@
 const express = require('express');
 const mainModel = require('../model');
 const router = express.Router();
-const { validatedId } = require('../model/validation');
+const { validatedId, checkPostItemFields, checkPutItemFields } = require('../model/validation');
 module.exports = router;
 
-router.get('/:resourceId?', async function (req, res) {
-  if (req.params.resourceId) {
-    const id = validatedId(req.params.resourceId);
+router.get('/:id?', async function (req, res) {
+  if (req.params.id) {
+    const id = validatedId(req.params.id);
 
     if (id == null) {
       res.status(400).send('Resource id is not valid.');
       return;
     }
 
-    const resource = await mainModel.resources.get(id);
-    if (resource == null) {
-      res.status(404).send('No such resource');
-    } else {
-      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
-      resource.resourceTypeName = resourceType.name;
-      res.json(resource);
+    try {
+      const resource = await mainModel.resources.get(id);
+      if (resource == null) {
+        res.status(404).send('No such resource');
+      } else {
+        const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+        resource.resourceTypeName = resourceType.name;
+        res.json(resource);
+      }
+    } catch (error) {
+      console.log(`Error trying to GET resource: ${error}`);
+      res.status(500).send('Unexpected error trying to get a resource.');
     }
   } else {
-    const resources = await mainModel.resources.getAll();
-    for (const resource of resources) {
-      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
-      resource.resourceTypeName = resourceType.name;
+    try {
+      const resources = await mainModel.resources.getAll();
+      for (const resource of resources) {
+        const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+        resource.resourceTypeName = resourceType.name;
+      }
+      res.json(resources);
+    } catch (error) {
+      console.log(`Error trying to GET resource: ${error}`);
+      res.status(500).send('Unexpected error trying to get all resources.');
     }
-    res.json(resources);
   }
 });
 
 router.post('/', async function (req, res) {
-  const result = await mainModel.resources.insert(req.body);
+  const resourceItem = req.body;
+  if (!checkPostItemFields(resourceItem, mainModel.resources)) {
+    res.status(400).send('Resource does not have required fields.');
+    return;
+  }
+
+  try {
+    const result = await mainModel.resources.insert(req.body);
+    res.json(result);
+  } catch (error) {
+    console.log(`Error trying to POST a new resource: ${error}`);
+    res.status(500).send('Unexpected error trying to create a new resource');
+  }
+});
+
+router.put('/', async function (req, res) {
+  const resourceItem = req.body;
+  if (!checkPutItemFields(resourceItem, mainModel.resources)) {
+    res.status(400).send('Resource does not have required fields.');
+    return;
+  }
+  try {
+    const result = await mainModel.resources.update(req.body);
+    res.json(result);
+  } catch (error) {
+    console.log(`Error trying to PUT a resource: ${error}`);
+    res.status(500).send('Unexpected error trying to create a new resource');
+  }
+});
+
+router.delete('/:id?', async function (req, res) {
+  const id = validatedId(req.params.id);
+
+  if (id == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
+  const result = await mainModel.resources.delete(id);
   res.json(result);
 });
