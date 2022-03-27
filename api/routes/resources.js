@@ -4,40 +4,40 @@ const router = express.Router();
 const { validatedId, checkPostItemFields, checkPutItemFields } = require('../model/validation');
 module.exports = router;
 
+router.get('/', async function (req, res) {
+  try {
+    const resources = await mainModel.resources.getAll();
+    for (const resource of resources) {
+      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      resource.resourceTypeName = resourceType.name;
+    }
+    res.json(resources);
+  } catch (error) {
+    console.log(`Error trying to GET resource: ${error}`);
+    res.status(500).send('Unexpected error trying to get all resources.');
+  }
+});
+
 router.get('/:id?', async function (req, res) {
-  if (req.params.id) {
-    const id = validatedId(req.params.id);
+  const id = validatedId(req.params.id);
 
-    if (id == null) {
-      res.status(400).send('Resource id is not valid.');
-      return;
-    }
+  if (id == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
 
-    try {
-      const resource = await mainModel.resources.get(id);
-      if (resource == null) {
-        res.status(404).send('No such resource');
-      } else {
-        const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
-        resource.resourceTypeName = resourceType.name;
-        res.json(resource);
-      }
-    } catch (error) {
-      console.log(`Error trying to GET resource: ${error}`);
-      res.status(500).send('Unexpected error trying to get a resource.');
+  try {
+    const resource = await mainModel.resources.get(id);
+    if (resource == null) {
+      res.status(404).send('No such resource');
+    } else {
+      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      resource.resourceTypeName = resourceType.name;
+      res.json(resource);
     }
-  } else {
-    try {
-      const resources = await mainModel.resources.getAll();
-      for (const resource of resources) {
-        const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
-        resource.resourceTypeName = resourceType.name;
-      }
-      res.json(resources);
-    } catch (error) {
-      console.log(`Error trying to GET resource: ${error}`);
-      res.status(500).send('Unexpected error trying to get all resources.');
-    }
+  } catch (error) {
+    console.log(`Error trying to GET resource: ${error}`);
+    res.status(500).send('Unexpected error trying to get a resource.');
   }
 });
 
