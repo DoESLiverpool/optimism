@@ -30,13 +30,23 @@ describe('API', function () {
     const inputs = [
       {
         description: 'valid resource item',
-        httpStatusCode: 200,
+        httpStatusCode: 201,
         body: { resourceTypeId: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       },
       {
         description: 'missing field in supplied resource item',
         httpStatusCode: 400,
         body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'an id field is supplied in the resource item',
+        httpStatusCode: 400,
+        body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'an extra field is supplied in the resource item',
+        httpStatusCode: 400,
+        body: { thisShould: 'not be here', name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       }
     ];
     inputs.forEach((input) => {
@@ -58,6 +68,49 @@ describe('API', function () {
       const newResource = await request(app).get(`/api/resources/${newId}`);
       resource.id = newId;
       expect(newResource.body).includes(resource);
+    });
+  });
+  describe('PUT /api/resources/', () => {
+    const inputs = [
+      {
+        description: 'valid resource item fields',
+        httpStatusCode: 200,
+        id: 1,
+        body: { id: 1, resourceTypeId: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'no id field in supplied resource item',
+        httpStatusCode: 200,
+        id: 1,
+        body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'id in request URL is not equal to resource item id',
+        httpStatusCode: 400,
+        id: 2,
+        body: { id: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'non-existent id field in supplied resource item',
+        httpStatusCode: 404,
+        id: 9999,
+        body: { id: 9999, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      }
+    ];
+    inputs.forEach((input) => {
+      it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
+        const response = await request(app).put(`/api/resources/${input.id}`).send(input.body);
+        expect(response.status).to.equal(input.httpStatusCode);
+      });
+    });
+    it('updates an existing resource correctly', async () => {
+      const all = await request(app).get('/api/resources');
+      const existingResource = all.body[0];
+      existingResource.name = 'Updated in test method';
+      const response = await request(app).put(`/api/resources/${existingResource.id}`).send(existingResource);
+      expect(response.status).to.equal(200);
+      const updatedResource = await request(app).get(`/api/resources/${existingResource.id}`);
+      expect(updatedResource.body.name).equals('Updated in test method');
     });
   });
   describe('/api/calendar', () => {
