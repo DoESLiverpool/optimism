@@ -18,7 +18,7 @@ router.get('/', async function (req, res) {
   }
 });
 
-router.get('/:id?', async function (req, res) {
+router.get('/:id', async function (req, res) {
   const id = validatedId(req.params.id);
 
   if (id == null) {
