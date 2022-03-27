@@ -13,7 +13,7 @@ describe('API', function () {
     await knex.migrate.latest();
     await knex.seed.run();
   });
-  describe('GET /api/resources/{id}', () => {
+  describe('GET /api/resources/id', () => {
     const inputs = [
       { description: 'valid resource id', resourceId: 1, httpStatusCode: 200 },
       { description: 'invalid resource id', resourceId: -1, httpStatusCode: 400 },
@@ -39,12 +39,12 @@ describe('API', function () {
         body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       },
       {
-        description: 'an id field is supplied in the resource item',
+        description: 'an id field supplied in the resource item',
         httpStatusCode: 400,
         body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       },
       {
-        description: 'an extra field is supplied in the resource item',
+        description: 'an extra field supplied in the resource item',
         httpStatusCode: 400,
         body: { thisShould: 'not be here', name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       }
@@ -70,7 +70,7 @@ describe('API', function () {
       expect(newResource.body).includes(resource);
     });
   });
-  describe('PUT /api/resources/', () => {
+  describe('PUT /api/resources/id', () => {
     const inputs = [
       {
         description: 'valid resource item fields',
@@ -85,9 +85,15 @@ describe('API', function () {
         body: { name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       },
       {
-        description: 'id in request URL is not equal to resource item id',
+        description: 'id in request URL not equal to resource item id',
         httpStatusCode: 400,
         id: 2,
+        body: { id: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
+      },
+      {
+        description: 'invalid id',
+        httpStatusCode: 400,
+        id: -1,
         body: { id: 1, name: 'Test', capacity: 123, minimumBookingTime: 30, maximumBookingTime: 60 }
       },
       {
@@ -111,6 +117,39 @@ describe('API', function () {
       expect(response.status).to.equal(200);
       const updatedResource = await request(app).get(`/api/resources/${existingResource.id}`);
       expect(updatedResource.body.name).equals('Updated in test method');
+    });
+  });
+  describe('DELETE api/resource/id', () => {
+    const inputs = [
+      {
+        description: 'an id for an existing resource',
+        httpStatusCode: 200,
+        id: 1
+      },
+      {
+        description: 'an id for a non-existant resource',
+        httpStatusCode: 204,
+        id: 9999
+      },
+      {
+        description: 'an invalid id',
+        httpStatusCode: 400,
+        id: -1
+      }
+    ];
+    inputs.forEach((input) => {
+      it(`returns an HTTP ${input.httpStatusCode} status with ${input.description}`, async () => {
+        const response = await request(app).delete(`/api/resources/${input.id}`);
+        expect(response.status).to.equal(input.httpStatusCode);
+      });
+    });
+    it('deletes an existing reource', async () => {
+      const all = await request(app).get('/api/resources');
+      const existingResource = all.body[0];
+      let response = await request(app).delete(`/api/resources/${existingResource.id}`);
+      expect(response.status).to.equal(200);
+      response = await request(app).get(`/api/resources/${existingResource.id}`);
+      expect(response.status).to.equal(404);
     });
   });
   describe('/api/calendar', () => {
