@@ -43,6 +43,7 @@ router.get('/:id', async function (req, res) {
 
 router.post('/', async function (req, res) {
   const resourceItem = req.body;
+
   if (!checkPostItemFields(resourceItem, mainModel.resources)) {
     res.status(400).send('Resource does not have required fields.');
     return;
@@ -102,7 +103,8 @@ router.delete('/:id?', async function (req, res) {
   }
   try {
     const result = await mainModel.resources.delete(id);
-    res.json(result);
+    const status = result === 0 ? 204 : 200;
+    res.status(status).json(result);
   } catch (error) {
     console.log(`Error trying to DELETE a resource: ${error}`);
     res.status(500).send('Unexpected error trying to delete a resource');
