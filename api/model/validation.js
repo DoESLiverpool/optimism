@@ -35,12 +35,9 @@ function checkPostItemFields (item, modelItems) {
 function checkPutItemFields (item, modelItems) {
   // This includes the primary key.
   const targetKeys = Object.keys(modelItems.jsonToTableNames);
-  const itemKeys = Object.keys(item);
-  if (!itemKeys.includes(modelItems.primaryKeyColumn)) {
-    return false;
-  }
+  const itemKeys = Object.keys(item).filter(key => key !== modelItems.primaryKeyColumn);
   for (const key of itemKeys) {
-    if (key !== modelItems.primaryKeyColumn && !targetKeys.includes(key)) {
+    if (!targetKeys.includes(key)) {
       return false;
     }
   }
