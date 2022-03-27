@@ -50,20 +50,41 @@ router.post('/', async function (req, res) {
 
   try {
     const result = await mainModel.resources.insert(req.body);
-    res.json(result);
+    res.status(201).json(result);
   } catch (error) {
     console.log(`Error trying to POST a new resource: ${error}`);
     res.status(500).send('Unexpected error trying to create a new resource');
   }
 });
 
-router.put('/', async function (req, res) {
+router.put('/:id', async function (req, res) {
+  const id = validatedId(req.params.id);
+
+  if (id == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
+
   const resourceItem = req.body;
+
+  if (resourceItem.id !== undefined && resourceItem.id !== id) {
+    res.status(400).send('Resource id parameter and id in request body must match.');
+    return;
+  }
+
+  delete resourceItem.resourceTypeName;
+  resourceItem.id = id;
+
   if (!checkPutItemFields(resourceItem, mainModel.resources)) {
     res.status(400).send('Resource does not have required fields.');
     return;
   }
   try {
+    const existing = await mainModel.resources.get(resourceItem.id);
+    if (existing == null) {
+      res.status(404).send('No such resource');
+      return;
+    }
     const result = await mainModel.resources.update(req.body);
     res.json(result);
   } catch (error) {
