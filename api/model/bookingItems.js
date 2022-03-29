@@ -12,8 +12,8 @@ class BookingItems extends ModelItemsBase {
     ]);
   }
 
-  get (starts, ends, resourceId) {
-    const query = this.getSelectQuery()
+  getByDate (starts, ends, resourceId) {
+    const query = this.getSelectQuery(this.knex)
       .join('resources', 'resources.id', '=', 'bookings.resource_id')
       .where('bookings.resource_id', '=', resourceId)
       .where('starts', '>=', starts.toISOString())
