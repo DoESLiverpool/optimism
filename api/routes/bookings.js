@@ -20,7 +20,7 @@ router.get('/:id', async function (req, res) {
     res.status(400).send('Booking id is not valid.');
   }
   try {
-    const slot = await mainModel.bookings.get(id);
+    const slot = await mainModel.bookings.getById(id);
     if (slot == null) {
       res.status(404).send('No such booking');
     } else {
@@ -62,7 +62,7 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.bookings.get(bookingItem.id);
+    const existing = await mainModel.bookings.getById(bookingItem.id);
     if (existing == null) {
       res.status(404).send('No such booking');
       return;
@@ -82,7 +82,7 @@ router.delete('/:id', async function (req, res) {
     return;
   }
   try {
-    const result = await mainModel.bookings.delete(id);
+    const result = await mainModel.bookings.deleteWhere({ id: id });
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
   } catch (error) {

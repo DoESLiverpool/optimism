@@ -20,7 +20,7 @@ router.get('/:id', async function (req, res) {
     res.status(400).send('ResourceType id is not valid.');
   }
   try {
-    const resourceType = await mainModel.resourceTypes.get(id);
+    const resourceType = await mainModel.resourceTypes.getById(id);
     if (resourceType == null) {
       res.status(404).send('No such resourceType');
     } else {
@@ -62,7 +62,7 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.resources.get(resourceType.id);
+    const existing = await mainModel.resources.getById(resourceType.id);
     if (existing == null) {
       res.status(404).send('No such resourceType');
       return;
@@ -84,13 +84,13 @@ router.delete('/:id', async function (req, res) {
   try {
     let result = null;
     await mainModel.knex.transaction(async trx => {
-      const resources = await trx.select('id').from('resources').where({ resource_type_id: id });
+      const resources = await mainModel.resources.getWhere({ resource_type_id: id }, trx);
       for (const r of resources) {
-        await trx.delete().from('bookings').where({ resource_id: r.id });
+        await mainModel.bookings.deleteWhere({ resource_id: r.id }, trx);
         await trx.delete().from('resources_slots').where({ resource_id: r.id });
-        await trx.delete().from('resources').where({ id: r.id });
+        await mainModel.resources.deleteWhere({ id: r.id }, trx);
       }
-      result = await trx.delete().from('resource_types').where({ id: id });
+      result = await mainModel.resourceTypes.deleteWhere({ id: id }, trx);
     });
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);

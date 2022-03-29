@@ -8,7 +8,7 @@ router.get('/', async function (req, res) {
   try {
     const resources = await mainModel.resources.getAll();
     for (const resource of resources) {
-      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      const resourceType = await mainModel.resourceTypes.getById(resource.resourceTypeId);
       resource.resourceTypeName = resourceType.name;
     }
     res.json(resources);
@@ -25,11 +25,11 @@ router.get('/:id', async function (req, res) {
     return;
   }
   try {
-    const resource = await mainModel.resources.get(id);
+    const resource = await mainModel.resources.getById(id);
     if (resource == null) {
       res.status(404).send('No such resource');
     } else {
-      const resourceType = await mainModel.resourceTypes.get(resource.resourceTypeId);
+      const resourceType = await mainModel.resourceTypes.getById(resource.resourceTypeId);
       resource.resourceTypeName = resourceType.name;
       res.json(resource);
     }
@@ -72,7 +72,7 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.resources.get(resourceItem.id);
+    const existing = await mainModel.resources.getById(resourceItem.id);
     if (existing == null) {
       res.status(404).send('No such resource');
       return;
@@ -94,7 +94,7 @@ router.delete('/:id?', async function (req, res) {
   try {
     await mainModel.knex('bookings').delete().where({ resource_id: id });
     await mainModel.knex('resources_slots').delete().where({ resource_id: id });
-    const result = await mainModel.resources.delete(id);
+    const result = await mainModel.resources.delete({ id: id });
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
   } catch (error) {

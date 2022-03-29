@@ -20,7 +20,7 @@ router.get('/:id', async function (req, res) {
     res.status(400).send('Slot id is not valid.');
   }
   try {
-    const slot = await mainModel.slots.get(id);
+    const slot = await mainModel.slots.getById(id);
     if (slot == null) {
       res.status(404).send('No such slot');
     } else {
@@ -62,7 +62,7 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.resources.get(slotItem.id);
+    const existing = await mainModel.resources.getById(slotItem.id);
     if (existing == null) {
       res.status(404).send('No such slot');
       return;
@@ -83,7 +83,7 @@ router.delete('/:id', async function (req, res) {
   }
   try {
     await mainModel.knex('resources_slots').delete().where({ slot_id: id });
-    const result = await mainModel.slots.delete(id);
+    const result = await mainModel.slots.delete({ id: id });
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
   } catch (error) {
