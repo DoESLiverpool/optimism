@@ -20,12 +20,10 @@ router.get('/', async function (req, res) {
 
 router.get('/:id', async function (req, res) {
   const id = validatedId(req.params.id);
-
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;
   }
-
   try {
     const resource = await mainModel.resources.get(id);
     if (resource == null) {
@@ -43,12 +41,10 @@ router.get('/:id', async function (req, res) {
 
 router.post('/', async function (req, res) {
   const resourceItem = req.body;
-
   if (!checkPostItemFields(resourceItem, mainModel.resources)) {
     res.status(400).send('Resource does not have required fields.');
     return;
   }
-
   try {
     const result = await mainModel.resources.insert(req.body);
     res.status(201).json(result);
@@ -60,22 +56,17 @@ router.post('/', async function (req, res) {
 
 router.put('/:id', async function (req, res) {
   const id = validatedId(req.params.id);
-
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;
   }
-
   const resourceItem = req.body;
-
   if (resourceItem.id !== undefined && resourceItem.id !== id) {
     res.status(400).send('Resource id parameter and id in request body must match.');
     return;
   }
-
   delete resourceItem.resourceTypeName;
   resourceItem.id = id;
-
   if (!checkPutItemFields(resourceItem, mainModel.resources)) {
     res.status(400).send('Resource does not have required fields.');
     return;
@@ -96,12 +87,13 @@ router.put('/:id', async function (req, res) {
 
 router.delete('/:id?', async function (req, res) {
   const id = validatedId(req.params.id);
-
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;
   }
   try {
+    await mainModel.knex('bookings').delete().where({ resource_id: id });
+    await mainModel.knex('resources_slots').delete().where({ resource_id: id });
     const result = await mainModel.resources.delete(id);
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
