@@ -8,12 +8,12 @@ class ModelItemsBase {
     this.jsonToTableNames = this.getJsonToTableNames(allColumns);
   }
 
-  getSelectQuery () {
+  getSelectQuery (knex) {
     const selectArgs = [];
     this.allColumns.forEach(column => {
       selectArgs.push(this.getSelectPart(column));
     });
-    return this.knex.select(...selectArgs).from(this.tableName);
+    return knex.select(...selectArgs).from(this.tableName);
   }
 
   getSelectPart (column) {
@@ -23,32 +23,43 @@ class ModelItemsBase {
     return `${this.tableName}.${columnName} as ${jsonName}`;
   }
 
-  get (id) {
-    const query = this.getSelectQuery().where(`${this.tableName}.${this.primaryKeyColumn}`, id);
+  getWhere (whereCondition, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
+    const query = this.getSelectQuery(knexOrTrx).where(whereCondition);
+    return query;
+  }
+
+  getById (id, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
+    const query = this.getSelectQuery(knexOrTrx).where(`${this.tableName}.${this.primaryKeyColumn}`, id);
     return query.then((results) => {
       return results.length === 0 ? null : results[0];
     });
   }
 
-  getAll () {
-    const query = this.getSelectQuery().orderBy(`${this.tableName}.${this.primaryKeyColumn}`, 'asc');
+  getAll (trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
+    const query = this.getSelectQuery(knexOrTrx).orderBy(`${this.tableName}.${this.primaryKeyColumn}`, 'asc');
     return query.then((results) => { return results; });
   }
 
-  insert (item) {
+  insert (item, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this.convertJsonNamesToColumnNames(item);
-    const query = this.knex(this.tableName).insert(itemWithColumnNames);
+    const query = knexOrTrx(this.tableName).insert(itemWithColumnNames);
     return query.then((results) => { return results; });
   }
 
-  update (item) {
+  update (item, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this.convertJsonNamesToColumnNames(item);
-    const query = this.knex(this.tableName).update(itemWithColumnNames).where({ id: itemWithColumnNames.id });
+    const query = knexOrTrx(this.tableName).update(itemWithColumnNames).where({ id: itemWithColumnNames.id });
     return query.then((results) => { return results; });
   }
 
-  delete (id) {
-    const query = this.knex(this.tableName).delete().where({ id: id });
+  deleteWhere (whereCondition, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
+    const query = knexOrTrx(this.tableName).delete().where(whereCondition);
     return query.then((results) => { return results; });
   }
 
