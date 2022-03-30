@@ -70,8 +70,7 @@ class ModelItemsBase {
    */
   getAll (trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
-    const query = this.getSelectQuery(knexOrTrx).orderBy(`${this.tableName}.${this.primaryKeyColumn}`, 'asc');
-    return query.then((results) => { return results; });
+    return this.getSelectQuery(knexOrTrx).orderBy(`${this.tableName}.${this.primaryKeyColumn}`, 'asc');
   }
 
   /**
@@ -84,8 +83,7 @@ class ModelItemsBase {
   insert (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this._convertJsonNamesToColumnNames(item);
-    const query = knexOrTrx(this.tableName).insert(itemWithColumnNames);
-    return query.then((results) => { return results; });
+    return knexOrTrx(this.tableName).insert(itemWithColumnNames);
   }
 
   /**
@@ -98,8 +96,7 @@ class ModelItemsBase {
   update (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this._convertJsonNamesToColumnNames(item);
-    const query = knexOrTrx(this.tableName).update(itemWithColumnNames).where({ id: itemWithColumnNames.id });
-    return query.then((results) => { return results; });
+    return knexOrTrx(this.tableName).update(itemWithColumnNames).where({ id: itemWithColumnNames.id });
   }
 
   /**
@@ -111,8 +108,7 @@ class ModelItemsBase {
    */
   deleteWhere (whereCondition, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
-    const query = knexOrTrx(this.tableName).delete().where(whereCondition);
-    return query.then((results) => { return results; });
+    return knexOrTrx(this.tableName).delete().where(whereCondition);
   }
 
   _getSelectPart (column) {
