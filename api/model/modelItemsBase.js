@@ -5,7 +5,7 @@ class ModelItemsBase {
   /**
    * This should be called in a derived class constructor.
    *
-   * @param {object} model - The model to which this object belongs.
+   * @param {object} model - The model which owns this object.
    * @param {string} tableName - The name of the database table.
    * @param {string} primaryKeyColumn - The name of the primary key column (typically 'id')
    * @param {Array.<string>} allColumns - The array of table column names, including the primary key column. If
@@ -35,24 +35,9 @@ class ModelItemsBase {
   }
 
   /**
-   * Gets a string used in getSelectQuery().
-   *
-   * @param {string} column - a string in the format 'column_name' or 'column_name=jsonName'
-   * @returns {string} A string in the form 'table_name.column_name as jsonName'
-   */
-  _getSelectPart (column) {
-    const parts = column.split('=');
-    const columnName = parts[0];
-    const jsonName = parts.length === 2 ? parts[1] : parts[0];
-    return `${this.tableName}.${columnName} as ${jsonName}`;
-  }
-
-  /**
    * Gets filtered results based on supplied column_name: value pairs.
    *
-   * @param {Object<string, any>} whereCondition - Key/value pairs. Each represents
-   *    a SQL table column name and its required value. For example { id: 123 } means return
-   *    results where the id field = 123.
+   * @param {Object<string, any>} whereCondition - { column_name: value, ... } pairs. For example { id: 123 }.
    * @param {Function} trx - Optional knex function to be supplied when using a transaction.
    * @returns {Promise} When resolved returns filtered results.
    */
@@ -108,7 +93,7 @@ class ModelItemsBase {
    *
    * @param {Object<string,any>} item - The item to update. It must include the id column and at least one other column.
    * @param {*} trx - Optional knex function to be supplied when using a transaction.
-   * @returns TODO
+   * @returns {any} TODO
    */
   update (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
@@ -120,16 +105,21 @@ class ModelItemsBase {
   /**
    * Deletes items based on supplied column_name: value pairs.
    *
-   * @param {Object<string, any>} whereCondition - Key/value pairs. Each represents
-   *    a SQL table column name and its required value. For example { id: 123 } means return
-   *    results where the id field = 123.
+   * @param {Object<string, any>} whereCondition - { column_name: value, ... } pairs. For example { id: 123 }.
    * @param {*} trx - Optional knex function to be supplied when using a transaction.
-   * @returns TODO
+   * @returns {any} TODO
    */
   deleteWhere (whereCondition, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
     const query = knexOrTrx(this.tableName).delete().where(whereCondition);
     return query.then((results) => { return results; });
+  }
+
+  _getSelectPart (column) {
+    const parts = column.split('=');
+    const columnName = parts[0];
+    const jsonName = parts.length === 2 ? parts[1] : parts[0];
+    return `${this.tableName}.${columnName} as ${jsonName}`;
   }
 
   _convertJsonNamesToColumnNames (jsonItem) {

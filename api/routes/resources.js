@@ -1,7 +1,7 @@
 const express = require('express');
 const mainModel = require('../model');
 const router = express.Router();
-const { validatedId, checkPostItemFields, checkPutItemFields } = require('../model/validation');
+const { checkId, checkPostItemFields, checkPutItemFields } = require('../model/validation');
 module.exports = router;
 
 router.get('/', async function (req, res) {
@@ -19,7 +19,7 @@ router.get('/', async function (req, res) {
 });
 
 router.get('/:id', async function (req, res) {
-  const id = validatedId(req.params.id);
+  const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;
@@ -55,7 +55,7 @@ router.post('/', async function (req, res) {
 });
 
 router.put('/:id', async function (req, res) {
-  const id = validatedId(req.params.id);
+  const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;
@@ -86,7 +86,7 @@ router.put('/:id', async function (req, res) {
 });
 
 router.delete('/:id?', async function (req, res) {
-  const id = validatedId(req.params.id);
+  const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('Resource id is not valid.');
     return;

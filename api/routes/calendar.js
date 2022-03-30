@@ -1,20 +1,20 @@
 const express = require('express');
 const mainModel = require('../model');
 const moment = require('moment');
-const { validatedId, validatedDate } = require('../model/validation');
+const { checkId, checkDate } = require('../model/validation');
 
 const router = express.Router();
 module.exports = router;
 
 router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
-  const startDate = validatedDate(req.params.startDate);
+  const startDate = checkDate(req.params.startDate);
 
   if (startDate == null) {
     res.status(400).send('Start date is not a valid ISO-formatted date.');
     return;
   }
 
-  const endDate = validatedDate(req.params.endDate);
+  const endDate = checkDate(req.params.endDate);
 
   if (endDate == null) {
     res.status(400).send('End date is not a valid ISO-formatted date.');
@@ -26,7 +26,7 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
     return;
   }
 
-  const resourceId = validatedId(req.params.resourceId);
+  const resourceId = checkId(req.params.resourceId);
 
   if (resourceId == null) {
     res.status(400).send('Resource id is not valid.');
