@@ -5,7 +5,11 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'standard'
+    'standard',
+    'plugin:jsdoc/recommended'
+  ],
+  plugins: [
+    'jsdoc'
   ],
   parserOptions: {
     ecmaVersion: 'latest'
