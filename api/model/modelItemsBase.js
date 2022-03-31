@@ -100,6 +100,18 @@ class ModelItemsBase {
   }
 
   /**
+   * Deletes an item with a specified id.
+   *
+   * @param {number} id - The id of the item to delete.
+   * @param {*} trx - Optional knex function to be supplied when using a transaction.
+   * @returns {any} TODO
+   */
+  deleteById (id, trx = null) {
+    const knexOrTrx = trx == null ? this.knex : trx;
+    return knexOrTrx(this.tableName).delete().where({ id: id });
+  }
+
+  /**
    * Deletes items based on supplied column_name: value pairs.
    *
    * @param {Object<string, any>} whereCondition - { column_name: value, ... } pairs. For example { id: 123 }.
