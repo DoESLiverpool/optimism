@@ -30,6 +30,17 @@ class SlotItems extends ModelIemsBase {
       .where('resources_slots.resource_id', resourceId);
     return query.then((slots) => { return slots; });
   }
+
+  deleteById (id, trx = null) {
+    return (async () => {
+      let results = null;
+      await this.model.knex.transaction(async trx => {
+        await trx('resources_slots').delete().where({ slot_id: id });
+        results = await super.deleteById(id, trx).then((results) => { return results; });
+      });
+      return results;
+    })();
+  }
 }
 
 module.exports = SlotItems;
