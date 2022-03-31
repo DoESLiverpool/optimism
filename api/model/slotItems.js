@@ -31,12 +31,20 @@ class SlotItems extends ModelIemsBase {
     return query.then((slots) => { return slots; });
   }
 
+  /**
+   * Deletes a slot item with a specified id. Any association this slot has with resources
+   * (in the resources_slots join table) will be removed.
+   *
+   * @param {number} id - The id of the item to delete.
+   * @param {Function} trx - Optional knex function to be supplied when using a transaction.
+   * @returns {any} TODO
+   */
   deleteById (id, trx = null) {
     return (async () => {
       let results = null;
       await this.model.knex.transaction(async trx => {
         await trx('resources_slots').delete().where({ slot_id: id });
-        results = await super.deleteById(id, trx).then((results) => { return results; });
+        results = await super.deleteById(id, trx);
       });
       return results;
     })();
