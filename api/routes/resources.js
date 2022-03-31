@@ -92,9 +92,7 @@ router.delete('/:id?', async function (req, res) {
     return;
   }
   try {
-    await mainModel.bookings.deleteWhere({ resource_id: id });
-    await mainModel.knex('resources_slots').delete().where({ resource_id: id });
-    const result = await mainModel.resources.deleteWhere({ id: id });
+    const result = await mainModel.resources.deleteById(id);
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
   } catch (error) {
