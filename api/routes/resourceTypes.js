@@ -82,16 +82,7 @@ router.delete('/:id', async function (req, res) {
     return;
   }
   try {
-    let result = null;
-    await mainModel.knex.transaction(async trx => {
-      const resources = await mainModel.resources.getWhere({ resource_type_id: id }, trx);
-      for (const r of resources) {
-        await mainModel.bookings.deleteWhere({ resource_id: r.id }, trx);
-        await trx.delete().from('resources_slots').where({ resource_id: r.id });
-        await mainModel.resources.deleteWhere({ id: r.id }, trx);
-      }
-      result = await mainModel.resourceTypes.deleteWhere({ id: id }, trx);
-    });
+    const result = await mainModel.resourceTypes.deleteById(id);
     const status = result === 0 ? 204 : 200;
     res.status(status).json(result);
   } catch (error) {
