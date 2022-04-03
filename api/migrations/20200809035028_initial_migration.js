@@ -38,9 +38,9 @@ exports.up = function (knex) {
 
 exports.down = function (knex) {
   return knex.schema
-    .dropTable('bookings')
-    .dropTable('resources_slots')
-    .dropTable('resources')
-    .dropTable('slots')
-    .dropTable('resource_types')
+    .dropTableIfExists('bookings')
+    .dropTableIfExists('resources_slots')
+    .dropTableIfExists('resources')
+    .dropTableIfExists('slots')
+    .dropTableIfExists('resource_types');
 };
