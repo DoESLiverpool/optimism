@@ -13,6 +13,7 @@ class BookingItems extends ModelItemsBase {
       'id',
       'resource_id=resourceId',
       'email',
+      'name',
       'notes',
       'starts',
       'ends'
