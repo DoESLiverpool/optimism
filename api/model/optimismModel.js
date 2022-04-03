@@ -3,7 +3,7 @@ const ResourceTypeItems = require('./resourceTypeItems');
 const SlotItems = require('./slotItems');
 const BookingItems = require('./bookingItems');
 /**
- * Represents the underlying database tables and provides fields to access and
+ * Represents the underlying database tables and provides properties to access and
  * modify the data in these.
  */
 class OptimismModel {
