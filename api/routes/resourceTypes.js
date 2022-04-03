@@ -18,6 +18,7 @@ router.get('/:id', async function (req, res) {
   const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('ResourceType id is not valid.');
+    return;
   }
   try {
     const resourceType = await mainModel.resourceTypes.getById(id);
@@ -36,6 +37,7 @@ router.post('/', async function (req, res) {
   const resourceType = req.body;
   if (!checkPostItemFields(resourceType, mainModel.resourceTypes)) {
     res.status(400).send('ResourceType does not have required fields.');
+    return;
   }
   try {
     const result = await mainModel.resourceTypes.insert(req.body);
@@ -50,6 +52,7 @@ router.put('/:id', async function (req, res) {
   const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('ResourceType id is not valid.');
+    return;
   }
   const resourceType = req.body;
   if (resourceType.id !== undefined && resourceType.id !== id) {

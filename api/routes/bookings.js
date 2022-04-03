@@ -18,6 +18,7 @@ router.get('/:id', async function (req, res) {
   const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('Booking id is not valid.');
+    return;
   }
   try {
     const slot = await mainModel.bookings.getById(id);
@@ -36,6 +37,7 @@ router.post('/', async function (req, res) {
   const bookingtem = req.body;
   if (!checkPostItemFields(bookingtem, mainModel.bookings)) {
     res.status(400).send('Booking does not have required fields.');
+    return;
   }
   try {
     const result = await mainModel.bookings.insert(req.body);

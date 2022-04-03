@@ -18,6 +18,7 @@ router.get('/:id', async function (req, res) {
   const id = checkId(req.params.id);
   if (id == null) {
     res.status(400).send('Slot id is not valid.');
+    return;
   }
   try {
     const slot = await mainModel.slots.getById(id);
@@ -36,6 +37,7 @@ router.post('/', async function (req, res) {
   const slotItem = req.body;
   if (!checkPostItemFields(slotItem, mainModel.slots)) {
     res.status(400).send('Slot does not have required fields.');
+    return;
   }
   try {
     const result = await mainModel.slots.insert(req.body);
@@ -62,12 +64,12 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.resources.getById(slotItem.id);
+    const existing = await mainModel.slots.getById(slotItem.id);
     if (existing == null) {
       res.status(404).send('No such slot');
       return;
     }
-    const result = await mainModel.resources.update(req.body);
+    const result = await mainModel.slots.update(req.body);
     res.json(result);
   } catch (error) {
     console.log(`Error trying to PUT a slot: ${error}`);
