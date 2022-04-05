@@ -7,10 +7,6 @@ module.exports = router;
 router.get('/', async function (req, res) {
   try {
     const resources = await mainModel.resources.getAll();
-    for (const resource of resources) {
-      const resourceType = await mainModel.resourceTypes.getById(resource.resourceTypeId);
-      resource.resourceTypeName = resourceType.name;
-    }
     res.json(resources);
   } catch (error) {
     console.log(`Error trying to GET resource: ${error}`);
@@ -29,8 +25,6 @@ router.get('/:id', async function (req, res) {
     if (resource == null) {
       res.status(404).send('No such resource');
     } else {
-      const resourceType = await mainModel.resourceTypes.getById(resource.resourceTypeId);
-      resource.resourceTypeName = resourceType.name;
       res.json(resource);
     }
   } catch (error) {
@@ -65,7 +59,6 @@ router.put('/:id', async function (req, res) {
     res.status(400).send('Resource id parameter and id in request body must match.');
     return;
   }
-  delete resourceItem.resourceTypeName;
   resourceItem.id = id;
   if (!checkPutItemFields(resourceItem, mainModel.resources)) {
     res.status(400).send('Resource does not have required fields.');
