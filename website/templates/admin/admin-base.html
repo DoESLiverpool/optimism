@@ -1,0 +1,53 @@
+{% extends "../base.html" %}
+
+{% block main %}
+
+<main role="main">
+
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Administration</a>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="#">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/bookings">Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/resource-types">Resource types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/slots">Slots</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    {% block adminContent %}
+                    <p>This is admin bookings.</p>
+                    {% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+</main>
+
+{% endblock %}
