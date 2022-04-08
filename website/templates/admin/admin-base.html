@@ -1,18 +1,19 @@
 {% extends "../base.html" %}
 
+{% block navbar %}
+<div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item navbar-text text-primary">
+            ADMINISTRATION
+        </li>
+    </ul>
+    <a href="/admin/logout" class="btn btn-success my-2 my-sm-0">Sign out</a>
+</div>
+{% endblock %}
+
 {% block main %}
 
 <main role="main">
-
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Administration</a>
-        <ul class="navbar-nav px-3">
-            <li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
-            </li>
-        </ul>
-    </nav>
-
     <div class="container-fluid">
         <div class="row">
             <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -47,7 +48,6 @@
             </main>
         </div>
     </div>
-
 </main>
 
 {% endblock %}
