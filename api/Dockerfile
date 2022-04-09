@@ -24,6 +24,8 @@ RUN npm install
 
 # Copy the API code into the container
 COPY app.js app.js
+COPY model model
+COPY model.js model.js
 COPY db.js db.js
 COPY routes routes
 COPY migrations migrations
