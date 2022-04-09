@@ -7,8 +7,13 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
+  let redirect = req.query.redirect;
+  if (redirect === undefined) {
+    redirect = '/admin';
+  }
+  if (!(redirect === '/admin' || redirect.startsWith('/admin/'))) {
+    redirect = '/admin';
+  }
   req.session.isAdmin = true;
-  res.writeHead(302, {
-    Location: '/admin'
-  }).end();
+  res.redirect(redirect);
 });

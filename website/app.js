@@ -20,8 +20,9 @@ const auth = function (req, res, next) {
   const path = req.path;
   const requiresAuth = '/admin';
   const login = '/admin/login';
+  const logout = '/admin/logout';
 
-  if (path === login) {
+  if (path === login || path === logout) {
     return next();
   }
 
@@ -30,9 +31,7 @@ const auth = function (req, res, next) {
   }
 
   if (path.startsWith(requiresAuth)) {
-    return res.writeHead(302, {
-      Location: '/admin/login'
-    }).end();
+    return res.redirect(`/admin/login?redirect=${path}`);
   }
 
   return next();
