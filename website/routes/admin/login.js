@@ -7,6 +7,7 @@ router.get('/login', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
+  req.session.isAdmin = true;
   res.writeHead(302, {
     Location: '/admin'
   }).end();
