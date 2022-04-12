@@ -17,6 +17,7 @@ body {
     height: 50px;
     line-height: 50px;
     background-color: #f5f5f5;
+    z-index: 200;
 }
 
 .navbar-brand {
@@ -56,10 +57,9 @@ body {
 .sidebar {
     position: fixed;
     top: 3.5rem;
-    bottom: 50px;
+    bottom: 0;
     left: 0;
     z-index: 100;
-    /* Behind the navbar */
     padding: 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
@@ -90,3 +90,8 @@ body {
     font-size: .75rem;
     text-transform: uppercase;
   }
+
+.breadcrumb {
+    padding-left: 0;
+    background-color: transparent;
+}

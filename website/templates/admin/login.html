@@ -19,13 +19,19 @@
 
         <div class="form-label-group">
             <label for="inputEmail">Email address</label>
-            <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus>
+            <input type="email" name="user" class="form-control" placeholder="Email address" required autofocus>
         </div>
 
         <div class="form-label-group mt-2">
             <label for="inputPassword">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+            <input type="password" name="password" class="form-control" placeholder="Password" required>
         </div>
+
+        {% if showError %}
+        <div class="alert alert-danger mt-4" role="alert">
+            {{ message }}
+        </div>
+        {% endif %}
 
         <button class="btn btn-lg btn-primary btn-block mt-4" type="submit">Sign in</button>
     </form>

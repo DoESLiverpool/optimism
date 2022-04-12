@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const path = require('path');
@@ -38,6 +39,8 @@ const auth = function (req, res, next) {
 };
 
 app.use(express.static(staticFilesRootDirectory));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(session({
   secret: 'b8268fa1-3b29-4885-80fc-e916b9949386',
   resave: true,
