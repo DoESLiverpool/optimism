@@ -83,7 +83,7 @@ class ModelItemsBase {
   insert (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this._convertJsonNamesToColumnNames(item);
-    return knexOrTrx(this.tableName).insert(itemWithColumnNames);
+    return knexOrTrx(this.tableName).returning(this.primaryKeyColumn).insert(itemWithColumnNames);
   }
 
   /**
