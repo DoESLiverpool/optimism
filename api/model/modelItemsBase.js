@@ -43,7 +43,8 @@ class ModelItemsBase {
    */
   getWhere (whereCondition, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
-    const query = this.getSelectQuery(knexOrTrx).where(whereCondition);
+    const columnNameWhereCondition = this._convertJsonNamesToColumnNames(whereCondition);
+    const query = this.getSelectQuery(knexOrTrx).where(columnNameWhereCondition);
     return query;
   }
 
@@ -78,12 +79,34 @@ class ModelItemsBase {
    *
    * @param {Object<string, any>} item - The item to insert. It must have all the columns except the id column.
    * @param {Function} trx - Optional knex function to be supplied when using a transaction.
-   * @returns {any} TODO.
+   * @returns {Promise} When resolved returns an array of the form [{id: 123}] where the id is set to the inserted
+   *  row id. If the knex client is not one of 'pg' or 'sqlite3' then a rejected promise is returned.
    */
   insert (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
     const itemWithColumnNames = this._convertJsonNamesToColumnNames(item);
-    return knexOrTrx(this.tableName).returning(this.primaryKeyColumn).insert(itemWithColumnNames);
+    /* The value returned should be an array of the form:
+       [{id: 16 }], where 16 in this example is the id of the inserted row.
+       There is no single method provided by different databases to obtain
+       this value. So specific code is needed for the different
+       clients that Optimism supports.
+
+       Currently these are pg (postgres) and sqlite3 (sqlite).
+    */
+    const client = knexOrTrx.client.config.client;
+    if (client === 'sqlite3') {
+      return knexOrTrx(this.tableName)
+        .insert(itemWithColumnNames)
+        .then(() => {
+          return knexOrTrx.raw('SELECT last_insert_rowid() as id');
+        });
+    }
+    if (client === 'pg') {
+      return knexOrTrx(this.tableName).returning(this.primaryKeyColumn).insert(itemWithColumnNames);
+    }
+    return Promise.reject(
+      new Error('The knex client is not supported. It must be one of \'pg\' or \'sqlite3\'')
+    );
   }
 
   /**
@@ -120,7 +143,8 @@ class ModelItemsBase {
    */
   deleteWhere (whereCondition, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
-    return knexOrTrx(this.tableName).delete().where(whereCondition);
+    const columnNameWhereCondition = this._convertJsonNamesToColumnNames(whereCondition);
+    return knexOrTrx(this.tableName).delete().where(columnNameWhereCondition);
   }
 
   _getSelectPart (column) {
