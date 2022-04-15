@@ -35,6 +35,7 @@ class ResourceItems extends ModelItemsBase {
         for (const r of bookings) {
           await this.model.bookings.update({ id: r.id, resourceId: null }, trx);
         }
+        await trx('resources_slots').delete().where({ resource_id: id });
         results = await super.deleteById(id, trx);
       });
       return results;
