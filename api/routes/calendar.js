@@ -49,11 +49,13 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   for (let date = startDate; date <= endDate; date = date.add(1, 'd')) {
     const dateSlots = [];
     slots.forEach((slot) => {
-      dateSlots.push({
-        starts: moment(date).add(slot.starts),
-        ends: moment(date).add(slot.ends),
-        status: slotIsAvailable(bookings, slot) ? 'available' : 'unavailable'
-      });
+      if (_slotIsAvailableOnDay(slot, date)) {
+        dateSlots.push({
+          starts: moment(date).add(slot.starts),
+          ends: moment(date).add(slot.ends),
+          status: _slotIsAvailable(slot, date, resource, bookings) ? 'available' : 'unavailable'
+        });
+      }
     });
     responseDates.dates.push({
       date: date.toISOString(),
@@ -67,6 +69,45 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   return res.json(responseDates);
 });
 
-function slotIsAvailable (bookings, slot) {
+0111110
+
+/**
+ *
+ * @param slot
+ * @param date
+ */
+function _slotIsAvailableOnDay (slot, date) {
+  const day = date.day();
+  const val = 2 ** day;
+  return slot.day & val;
+}
+
+/**
+ * Checks whether a slot is available to book, based on existing bookings and resource fields.
+ *
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @param {*} resource - the resource to check
+ * @param {*} bookings - all the bookings for the resource over the time period for the calendar entries
+ * @returns true if the slot can be booked, false if it can't
+ */
+function _slotIsAvailable (slot, date, resource, bookings) {
+  const maxCapacity = resource.capacity;
+  const day = date.day();
   return true;
 }
+
+// This method can be used to set the day of the week, with Sunday as 0 and Saturday as 6.
+
+// 'id',
+// 'resource_type_id=resourceTypeId',
+// 'name',
+// 'capacity',
+// 'min_minutes=minimumBookingTime',
+// 'max_minutes=maximumBookingTime'
+
+// 'id',
+// 'name',
+// 'day',
+// 'starts',
+// 'ends'
