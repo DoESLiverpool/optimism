@@ -91,7 +91,12 @@ body {
     text-transform: uppercase;
   }
 
-.breadcrumb {
-    padding-left: 0;
-    background-color: transparent;
+.admin-top-bar {
+    margin-bottom: 0.5rem;
+    .breadcrumb {
+        padding: 0;
+        background-color: transparent;
+    }
 }
+
+

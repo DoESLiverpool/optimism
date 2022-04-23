@@ -9979,8 +9979,11 @@ body {
   text-transform: uppercase;
 }
 
-.breadcrumb {
-  padding-left: 0;
+.admin-top-bar {
+  margin-bottom: 0.5rem;
+}
+.admin-top-bar .breadcrumb {
+  padding: 0;
   background-color: transparent;
 }
 
