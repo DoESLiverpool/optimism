@@ -1,0 +1,44 @@
+{% extends "admin/admin-base.html" %}
+
+{% block adminContent %}
+<div class="container">
+    <nav class="admin-top-bar">
+        <div class="row">
+            <div class="col-12 col-sm-8">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Resources</li>
+                </ol>
+            </div>
+            <div class="col-12 col-sm-4">
+                <a class="btn btn-success my-2 my-sm-0 float-right" href="/admin/resources/create">
+                    Create a resource</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="accordion accordion-flush" id="accordionExample">
+        {% for r in resources %}
+        <div class="row">
+            <div class="col">
+                <div class="card mb-4">
+                    <div class="card-header" id="headingOne">
+                        {{ r.name }}
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            <li>Id: {{ r.id }}</li>
+                            <li>Name: {{ r.name }}</li>
+                            <li>Resource type Id: {{ r.resourceTypeId }}</li>
+                            <li>Capacity: {{ r.capacity }}</li>
+                            <li>Minimum booking time: {{ r.minimumBookingTime }}</li>
+                            <li>Maximum booking time: {{ r.maximumBookingTime }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
