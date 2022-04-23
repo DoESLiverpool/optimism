@@ -47,9 +47,11 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(auth);
-app.use(require('./routes/public'));
+app.use(require('./routes/home'));
 app.use(require('./routes/select-a-resource'));
 app.use(require('./routes/select-a-time'));
+app.use(require('./routes/your-details'));
+app.use(require('./routes/confirmation'));
 app.use('/admin', require('./routes/admin/login'));
 app.use('/admin', require('./routes/admin/logout'));
 app.use('/admin', require('./routes/admin/home'));
