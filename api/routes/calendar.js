@@ -49,11 +49,11 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   for (let date = startDate; date <= endDate; date = date.add(1, 'd')) {
     const dateSlots = [];
     slots.forEach((slot) => {
-      if (_slotIsAvailableOnDay(slot, date)) {
+      if (_slotIsValidOnDate(slot, date)) {
         dateSlots.push({
           starts: moment(date).add(slot.starts),
           ends: moment(date).add(slot.ends),
-          status: _slotIsAvailable(slot, date, resource, bookings) ? 'available' : 'unavailable'
+          status: _slotIsAvailableAtTime(slot, date, resource, bookings) ? 'available' : 'unavailable'
         });
       }
     });
@@ -69,14 +69,14 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   return res.json(responseDates);
 });
 
-0111110
-
 /**
+ * Checks whether a slot is available on a given date.
  *
- * @param slot
- * @param date
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @returns {boolean} true if the slot is valid on the date given, false if it is not
  */
-function _slotIsAvailableOnDay (slot, date) {
+function _slotIsValidOnDate (slot, date) {
   const day = date.day();
   const val = 2 ** day;
   return slot.day & val;
@@ -89,25 +89,20 @@ function _slotIsAvailableOnDay (slot, date) {
  * @param {*} date - the date to check
  * @param {*} resource - the resource to check
  * @param {*} bookings - all the bookings for the resource over the time period for the calendar entries
- * @returns true if the slot can be booked, false if it can't
+ * @returns {boolean} true if the slot can be booked, false if it can't
  */
-function _slotIsAvailable (slot, date, resource, bookings) {
+function _slotIsAvailableAtTime (slot, date, resource, bookings) {
   const maxCapacity = resource.capacity;
-  const day = date.day();
-  return true;
+  const slotStarts = moment(date).add(slot.starts);
+  const slotEnds = moment(date).add(slot.ends);
+  let remainingCapacity = maxCapacity;
+  for (const b of bookings) {
+    const bookingStarts = moment(b.starts);
+    const bookingEnds = moment(b.ends);
+    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[]') ||
+      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '[]')) {
+      remainingCapacity--;
+    }
+  }
+  return remainingCapacity > 0;
 }
-
-// This method can be used to set the day of the week, with Sunday as 0 and Saturday as 6.
-
-// 'id',
-// 'resource_type_id=resourceTypeId',
-// 'name',
-// 'capacity',
-// 'min_minutes=minimumBookingTime',
-// 'max_minutes=maximumBookingTime'
-
-// 'id',
-// 'name',
-// 'day',
-// 'starts',
-// 'ends'

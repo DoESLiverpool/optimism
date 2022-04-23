@@ -3,6 +3,7 @@ const axios = require('axios');
 const moment = require('moment');
 const utilities = require('../utilities');
 const settings = require('../settings');
+const UserSession = require('./userSession');
 
 const apiUrl = settings.apiUrl;
 const router = express.Router();
@@ -14,6 +15,8 @@ router.get('/select-a-time', function (req, res) {
   if (!resourceId) {
     console.log('No resource id');
   }
+  req.session.userSession = new UserSession();
+  req.session.userSession.resourceId = resourceId;
 
   // Default to showing the next week...
   const fromDate = moment();
