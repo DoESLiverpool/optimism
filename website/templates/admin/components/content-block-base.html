@@ -1,0 +1,33 @@
+{% extends "admin/admin-base.html" %}
+
+
+{% block adminContent %}
+<div class="container">
+
+{% block adminNav %}
+    <nav class="admin-top-bar">
+        <div class="row">
+            <div class="col-12 col-sm-8">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href='/admin'>Admin</a></li>
+                    {% for c in breadCrumbs %}
+                    <li class="breadcrumb-item"><a href="{{ c.link }}">{{ c.name }}</a></li>
+                    {% endfor %}
+                    <li class="breadcrumb-item active" aria-current="page">{{ pageName }}</li>
+                </ol>
+            </div>
+            <div class="col-12 col-sm-4">
+            {% block adminNavExtraContent %}
+
+            {% endblock %}
+            </div>
+        </div>
+    </nav>
+{% endblock  %}
+
+{% block adminMainContent %}
+    <h2>The main content for this admin page goes here.</h2>
+{% endblock %}
+</div>
+
+{% endblock %}

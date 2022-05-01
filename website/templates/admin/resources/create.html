@@ -1,82 +1,61 @@
-{% extends "admin/admin-base.html" %}
+{% extends "admin/components/content-block-base.html" %}
 
-{% block adminContent %}
-<div class="container">
-    <nav class="admin-top-bar">
-        <div class="row">
-            <div class="col">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/admin">Admin</a></li>
-                    <li class="breadcrumb-item"><a href="/admin/resources">Resources</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Create</li>
-                </ol>
+{% block adminMainContent %}
+<div class="row">
+    <div class="col">
+        <form method="POST" action="/admin/resources/create" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-7">
+                    <label for="resourceName">Name</label>
+                    <input type="text" class="form-control" required id="resourceName" name="name"
+                        aria-describedby="nameHelp" placeholder="Enter name">
+                    <small id="nameHelp" class="form-text text-muted">
+                        This is the display name of the resource.
+                    </small>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="resourceType">Resource type</label>
+                    <select class="form-control" id="resourceType" name="resourceTypeId">
+                        <option value="null" selected>None</option>
+                        <option>Laser cutter</option>
+                        <option>Hot desk</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </nav>
-
-    <div class="row">
-        <div class="col">
-            <h2>Create a new resource</h2>
-        </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="resourceCapacity">Capacity</label>
+                    <input type="number" min="1" value="1" class="form-control" id="resourceCapacity"
+                        name="capacity" aria-describedby="capacityHelp" placeholder="Enter name">
+                    <small id="capacityHelp" class="form-text text-muted">
+                        The maximum number of times this resource that can be booked at the same time.
+                    </small>
+                </div>
+                <div class="form-group col">
+                    <label for="resourceMinTime">Minimum booking time</label>
+                    <input type="number" min="1" value="30" class="form-control" id="resourceMinTime"
+                        name="minimumBookingTime" aria-describedby="minTimeHelp" placeholder="Enter name">
+                    <small id="minTimeHelp" class="form-text text-muted">
+                        The minimum time in minutes that this resource can be booked for.
+                    </small>
+                </div>
+                <div class="form-group col">
+                    <label for="resourceMaxTime">Maximum booking time</label>
+                    <input type="number" min="1" value="480" class="form-control" id="resourceMaxTime"
+                        name="maximumBookingTime" aria-describedby="maxTimeHelp" placeholder="Enter name">
+                    <small id="maxTimeHelp" class="form-text text-muted">
+                        The maximum time in minutes that this resource can be booked for.
+                    </small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Create
+            </button>
+            <a class="btn btn-secondary my-2 my-sm-0" href="/admin/resources/">
+                Cancel
+            </a>
+        </form>
     </div>
-    <div class="row">
-        <div class="col">
-            <form method="POST" action="/admin/resources/create" class="mb-4">
-                <div class="form-row">
-                    <div class="form-group col-md-7">
-                        <label for="resourceName">Name</label>
-                        <input type="text" class="form-control" required id="resourceName" name="name"
-                            aria-describedby="nameHelp" placeholder="Enter name">
-                        <small id="nameHelp" class="form-text text-muted">
-                            This is the display name of the resource.
-                        </small>
-                    </div>
-                    <div class="form-group col-md-5">
-                        <label for="resourceType">Resource type</label>
-                        <select class="form-control" id="resourceType" name="resourceTypeId">
-                            <option value="null" selected>None</option>
-                            <option>Laser cutter</option>
-                            <option>Hot desk</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col">
-                        <label for="resourceCapacity">Capacity</label>
-                        <input type="number" min="1" value="1" class="form-control" id="resourceCapacity"
-                            name="capacity" aria-describedby="capacityHelp" placeholder="Enter name">
-                        <small id="capacityHelp" class="form-text text-muted">
-                            The maximum number of times this resource that can be booked at the same time.
-                        </small>
-                    </div>
-                    <div class="form-group col">
-                        <label for="resourceMinTime">Minimum booking time</label>
-                        <input type="number" min="1" value="30" class="form-control" id="resourceMinTime"
-                            name="minimumBookingTime" aria-describedby="minTimeHelp" placeholder="Enter name">
-                        <small id="minTimeHelp" class="form-text text-muted">
-                            The minimum time in minutes that this resource can be booked for.
-                        </small>
-                    </div>
-                    <div class="form-group col">
-                        <label for="resourceMaxTime">Maximum booking time</label>
-                        <input type="number" min="1" value="480" class="form-control" id="resourceMaxTime"
-                            name="maximumBookingTime" aria-describedby="maxTimeHelp" placeholder="Enter name">
-                        <small id="maxTimeHelp" class="form-text text-muted">
-                            The maximum time in minutes that this resource can be booked for.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="resourceDescription">Description</label>
-                    <textarea id="resourceDescription" name="descriptionHtml" class="form-control" rows="5"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    Create
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
 </div>
 {% endblock %}
+
