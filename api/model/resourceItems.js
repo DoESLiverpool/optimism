@@ -28,6 +28,7 @@ class ResourceItems extends ModelItemsBase {
    * @returns {any} TODO
    */
   deleteById (id, trx) {
+    // TODO: deal with the case where trx is provided as a parameter.
     return (async () => {
       let results = null;
       await this.model.knex.transaction(async trx => {
@@ -39,6 +40,18 @@ class ResourceItems extends ModelItemsBase {
         results = await super.deleteById(id, trx);
       });
       return results;
+    })();
+  }
+
+  updateSlots (id, slots) {
+    return (async () => {
+      await this.model.knex.transaction(async trx => {
+        await trx('resources_slots').delete().where({ resource_id: id });
+        for (const s of slots) {
+          await trx('resources_slots').insert({ resource_id: id, slot_id: s.id });
+        }
+      });
+      return slots.length;
     })();
   }
 }

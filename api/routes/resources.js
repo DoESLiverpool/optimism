@@ -93,3 +93,39 @@ router.delete('/:id?', async function (req, res) {
     res.status(500).send('Unexpected error trying to delete a resource');
   }
 });
+
+router.get('/:id/slots', async function (req, res) {
+  const id = checkId(req.params.id);
+  if (id == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
+  try {
+    const slots = await mainModel.slots.getByResourceId(id);
+    res.json(slots);
+  } catch (error) {
+    console.log(`Error trying to GET a slots for a resource: ${error}`);
+    res.status(500).send('Unexpected error trying to get slots for a resource');
+  }
+});
+
+router.put('/:id/slots', async function (req, res) {
+  const id = checkId(req.params.id);
+  if (id == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
+  const slots = req.body;
+  for (const s of slots) {
+    if (s.id === undefined || checkId(s.id) == null) {
+      res.status(400).send('Id of one or more slots is invalid.');
+      return;
+    }
+  }
+  try {
+    await mainModel.resources.updateSlots(id, slots);
+  } catch (error) {
+    console.log(`Error trying to update (via PUT) the slots for a resource: ${error}`);
+    res.status(500).send('Unexpected error trying to update slots for a resource');
+  }
+});
