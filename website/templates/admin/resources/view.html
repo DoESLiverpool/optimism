@@ -39,7 +39,10 @@
                         <input type="hidden" name="confirmed" value="no" />
                         <div class="row">
                             <div class="col">
-                                <input type="submit" class="btn btn-danger my-2 my-sm-0 float-right" role="button" name="submit"
+                                <a href="/admin/resources/edit/{{ r.id }}" class="btn btn-primary my-2 my-sm-0" role="button">
+                                    Edit
+                                </a>
+                                <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
                                     value="Delete" />
                             </div>
                         </div>

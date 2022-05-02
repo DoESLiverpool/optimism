@@ -34,11 +34,13 @@ router.get('/resources', async function (req, res) {
 });
 
 router.get('/resources/create', async function (req, res) {
+  const resourceTypes = await axios.get(`${apiUrl}/resource-types`);
   res.render('admin/resources/create.html', {
     pageName: 'Create',
     breadCrumbs: [
       { name: 'Resources', link: '/admin/resources' }
-    ]
+    ],
+    resourceTypes: resourceTypes.data
   });
 });
 
@@ -58,6 +60,66 @@ router.post('/resources/create', async function (req, res) {
       maximumBookingTime: maximumBookingTime
     });
     res.redirect('/admin/resources');
+  } catch (error) {
+    console.log(error);
+    res.render('error.html', {
+      safeErrorMessage: utilities.safeErrorMessage(error.message)
+    });
+  }
+});
+
+router.get('/resources/edit/:id', async function (req, res) {
+  const id = req.params.id;
+  const resource = await axios.get(`${apiUrl}/resources/${id}`);
+  if (resource.data.resourceTypeId !== null) {
+    const resourceType = await axios.get(`${apiUrl}/resource-types/${resource.data.resourceTypeId}`);
+    resource.data.resourceTypeName = resourceType.data.name;
+  } else {
+    resource.data.resourceTypeName = 'None';
+  }
+  const resourceTypes = await axios.get(`${apiUrl}/resource-types`);
+  return res.render('admin/resources/edit.html', {
+    pageName: 'Edit',
+    breadCrumbs: [
+      { name: 'Resources', link: '/admin/resources' }
+    ],
+    resource: resource.data,
+    resourceTypes: resourceTypes.data
+  });
+});
+
+router.post('/resources/edit/:id', async function (req, res) {
+  try {
+    const id = parseInt(req.params.id);
+    const name = req.body.name;
+    const resourceTypeId = req.body.resourceTypeId === 'null' ? null : parseInt(req.body.resourceTypeId);
+    const capacity = parseInt(req.body.capacity);
+    const minimumBookingTime = parseInt(req.body.minimumBookingTime);
+    const maximumBookingTime = parseInt(req.body.maximumBookingTime);
+    await axios.put(`${apiUrl}/resources/${id}`, {
+      id: id,
+      name: name,
+      capacity: capacity,
+      resourceTypeId: resourceTypeId,
+      minimumBookingTime: minimumBookingTime,
+      maximumBookingTime: maximumBookingTime
+    });
+    const resource = await axios.get(`${apiUrl}/resources/${id}`);
+    if (resource.data.resourceTypeId !== null) {
+      const resourceType = await axios.get(`${apiUrl}/resource-types/${resource.data.resourceTypeId}`);
+      resource.data.resourceTypeName = resourceType.data.name;
+    } else {
+      resource.data.resourceTypeName = 'None';
+    }
+    const resourceTypes = await axios.get(`${apiUrl}/resource-types`);
+    return res.render('admin/resources/edit.html', {
+      pageName: 'Edit',
+      breadCrumbs: [
+        { name: 'Resources', link: '/admin/resources' }
+      ],
+      resource: resource.data,
+      resourceTypes: resourceTypes.data
+    });
   } catch (error) {
     console.log(error);
     res.render('error.html', {

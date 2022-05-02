@@ -1,6 +1,9 @@
 {% extends "admin/components/content-block-base.html" %}
 
 {% block adminMainContent %}
+<div class="row col">
+    <h2>Create a resource</h2>
+</div>
 <div class="row">
     <div class="col">
         <form method="POST" action="/admin/resources/create" class="mb-4">
@@ -17,8 +20,11 @@
                     <label for="resourceType">Resource type</label>
                     <select class="form-control" id="resourceType" name="resourceTypeId">
                         <option value="null" selected>None</option>
-                        <option>Laser cutter</option>
-                        <option>Hot desk</option>
+                        {% for rt in resourceTypes %}
+                            <option value="{{ rt.id }}">
+                                {{ rt.name }}
+                            </option>
+                        {% endfor %}
                     </select>
                 </div>
             </div>
