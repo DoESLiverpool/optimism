@@ -1,5 +1,5 @@
 # Simple docker setup for the web server
-FROM node:13
+FROM node:16
 
 EXPOSE 3001
 

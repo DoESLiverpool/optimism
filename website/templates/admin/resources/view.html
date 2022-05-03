@@ -1,0 +1,56 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminNavExtraContent %}
+<a class="btn btn-success my-2 my-sm-0 float-right" href="/admin/resources/create">
+    Create a resource
+</a>
+{% endblock %}
+{% block adminMainContent %}
+<div class="accordion accordion-flush" id="accordionExample">
+    {% for r in resources %}
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4">
+                <div class="card-header" id="headingOne">
+                    {{ r.name }}
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Id: {{ r.id }}</li>
+                        <li>Name: {{ r.name }}</li>
+                        <li>Respource type: {{ r.resourceTypeName }}</li>
+                        <li>Capacity: {{ r.capacity }}</li>
+                        <li>Minimum booking time: {{ r.minimumBookingTime }}</li>
+                        <li>Maximum booking time: {{ r.maximumBookingTime }}</li>
+                        <li>Time slots:
+                            <ul>
+                                {% if r.slots|length > 0 %}
+                                {% for s in r.slots %}
+                                <li>{{ s.name }}: {{ s.starts }} - {{ s.ends }}</li>
+                                {% endfor %}
+                                {% else %}
+                                <li>(none)</li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                    </ul>
+                    <form method="POST" action="/admin/resources/confirm-deletion" class="mb-4">
+                        <input type="hidden" name="resourceId" value="{{ r.id }}" />
+                        <input type="hidden" name="confirmed" value="no" />
+                        <div class="row">
+                            <div class="col">
+                                <a href="/admin/resources/edit/{{ r.id }}" class="btn btn-primary my-2 my-sm-0" role="button">
+                                    Edit
+                                </a>
+                                <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
+                                    value="Delete" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -49,11 +49,13 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   for (let date = startDate; date <= endDate; date = date.add(1, 'd')) {
     const dateSlots = [];
     slots.forEach((slot) => {
-      dateSlots.push({
-        starts: moment(date).add(slot.starts),
-        ends: moment(date).add(slot.ends),
-        status: slotIsAvailable(bookings, slot) ? 'available' : 'unavailable'
-      });
+      if (_slotIsValidOnDate(slot, date)) {
+        dateSlots.push({
+          starts: moment(date).add(slot.starts),
+          ends: moment(date).add(slot.ends),
+          status: _slotIsAvailableAtTime(slot, date, resource, bookings) ? 'available' : 'unavailable'
+        });
+      }
     });
     responseDates.dates.push({
       date: date.toISOString(),
@@ -67,6 +69,40 @@ router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
   return res.json(responseDates);
 });
 
-function slotIsAvailable (bookings, slot) {
-  return true;
+/**
+ * Checks whether a slot is available on a given date.
+ *
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @returns {boolean} true if the slot is valid on the date given, false if it is not
+ */
+function _slotIsValidOnDate (slot, date) {
+  const day = date.day();
+  const val = 2 ** day;
+  return slot.day & val;
+}
+
+/**
+ * Checks whether a slot is available to book, based on existing bookings and resource fields.
+ *
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @param {*} resource - the resource to check
+ * @param {*} bookings - all the bookings for the resource over the time period for the calendar entries
+ * @returns {boolean} true if the slot can be booked, false if it can't
+ */
+function _slotIsAvailableAtTime (slot, date, resource, bookings) {
+  const maxCapacity = resource.capacity;
+  const slotStarts = moment(date).add(slot.starts);
+  const slotEnds = moment(date).add(slot.ends);
+  let remainingCapacity = maxCapacity;
+  for (const b of bookings) {
+    const bookingStarts = moment(b.starts);
+    const bookingEnds = moment(b.ends);
+    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[)') ||
+      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '()]')) {
+      remainingCapacity--;
+    }
+  }
+  return remainingCapacity > 0;
 }

@@ -1,0 +1,28 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminMainContent %}
+<div class="row">
+    <div class="col">
+        <h2>Confirm deletion</h2>
+        <p>If you delete a resource, any bookings for that resource will no longer be linked.</p>
+        <p>However the bookings themselves will still be valid and not deleted.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" action="/admin/resources/confirm-deletion" class="mb-4">
+            <input type="hidden" name="resourceId" value="{{ resourceId }}" />
+            <input type="hidden" name="confirmed" value="yes" />
+            <div class="row">
+                <div class="col">
+                    <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
+                        value="Confirm" />
+                    <a class="btn btn-secondary my-2 my-sm-0" href="/admin/resources/">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

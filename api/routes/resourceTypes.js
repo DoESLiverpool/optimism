@@ -65,7 +65,7 @@ router.put('/:id', async function (req, res) {
     return;
   }
   try {
-    const existing = await mainModel.resources.getById(resourceType.id);
+    const existing = await mainModel.resourceTypes.getById(resourceType.id);
     if (existing == null) {
       res.status(404).send('No such resourceType');
       return;

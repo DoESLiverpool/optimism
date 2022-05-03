@@ -28,6 +28,7 @@
   "homepage": "https://github.com/DoESLiverpool/optimism#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
+    "node-gyp": "^9.0.0",
     "supertest": "^6.1.3"
   },
   "devDependencies": {

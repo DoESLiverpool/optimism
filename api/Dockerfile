@@ -1,6 +1,6 @@
 # Simple docker setup for the API server
 
-FROM node:13
+FROM node:16
 
 EXPOSE 3001
 
@@ -24,6 +24,8 @@ RUN npm install
 
 # Copy the API code into the container
 COPY app.js app.js
+COPY model model
+COPY model.js model.js
 COPY db.js db.js
 COPY routes routes
 COPY migrations migrations

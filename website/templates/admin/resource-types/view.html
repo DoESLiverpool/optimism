@@ -1,0 +1,41 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminNavExtraContent %}
+<a class="btn btn-success my-2 my-sm-0 float-right" href="/admin/resource-types/create">
+    Create a resource type
+</a>
+{% endblock %}
+{% block adminMainContent %}
+<div class="accordion accordion-flush">
+    {% for r in resourceTypes %}
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4">
+                <div class="card-header" id="headingOne">
+                    {{ r.name }}
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Id: {{ r.id }}</li>
+                        <li>Name: {{ r.name }}</li>
+                    </ul>
+                    <form method="POST" action="/admin/resource-types/confirm-deletion" class="mb-4">
+                        <input type="hidden" name="resourceTypeId" value="{{ r.id }}" />
+                        <input type="hidden" name="confirmed" value="no" />
+                        <div class="row">
+                            <div class="col">
+                                <a href="/admin/resource-types/edit/{{ r.id }}" class="btn btn-primary my-2 my-sm-0" role="button">
+                                    Edit
+                                </a>
+                                <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
+                                    value="Delete" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -20,9 +20,9 @@
             <h3>Booking Details</h3>
             <p>Booking {{resource.name}} from {{friendlyStartTime}} to {{friendlyEndTime}}</p>
             <form method="POST" action="/confirmation" id="enter-details-form">
-                <input type="hidden" name="start" value="{{startTime}}" />
-                <input type="hidden" name="finish" value="{{endTime}}" />
-                <input type="hidden" name="resource" value="{{resource.id}}" />
+                <input type="hidden" name="starts" value="{{startTime}}" />
+                <input type="hidden" name="ends" value="{{endTime}}" />
+                <input type="hidden" name="resourceId" value="{{resource.id}}" />
                 <div class="form-group">
                     <label for="name">Name:</label>
                     <input type="text" class="form-control" name="name" placeholder="Your name here" value="" required="true" />

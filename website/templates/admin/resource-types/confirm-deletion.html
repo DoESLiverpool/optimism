@@ -1,0 +1,27 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminMainContent %}
+<div class="row">
+    <div class="col">
+        <h2>Confirm deletion</h2>
+        <p>Any resources which had this resource type will have their resource type set to None.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" action="/admin/resource-types/confirm-deletion" class="mb-4">
+            <input type="hidden" name="resourceTypeId" value="{{ resourceTypeId }}" />
+            <input type="hidden" name="confirmed" value="yes" />
+            <div class="row">
+                <div class="col">
+                    <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
+                        value="Confirm" />
+                    <a class="btn btn-secondary my-2 my-sm-0" href="/admin/resource-types/">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
