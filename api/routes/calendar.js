@@ -99,8 +99,8 @@ function _slotIsAvailableAtTime (slot, date, resource, bookings) {
   for (const b of bookings) {
     const bookingStarts = moment(b.starts);
     const bookingEnds = moment(b.ends);
-    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[]') ||
-      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '[]')) {
+    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[)') ||
+      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '()]')) {
       remainingCapacity--;
     }
   }
