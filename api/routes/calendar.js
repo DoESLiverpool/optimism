@@ -1,129 +1,108 @@
 const express = require('express');
-const knex = require('../db');
+const mainModel = require('../model');
 const moment = require('moment');
+const { checkId, checkDate } = require('../model/validation');
 
-const router = express.Router()
+const router = express.Router();
 module.exports = router;
 
-router.get('/:startDate/:endDate/:resourceId', function (req, res) {
+router.get('/:startDate/:endDate/:resourceId', async function (req, res) {
+  const startDate = checkDate(req.params.startDate);
 
-    // (1) The path will have a start and end date (format: yyyy-mm-dd).
-    // (2) The path will have a resource id.
-    // (3) Get the resource name.
-    // (4) Get a set of all available slot start times, slot end times
-    //     an slot days for the specified resource.
-    // (5) Get a set of all available bookings for the resource within
-    //     the start and end date.
-    // (6) For each day within the start and date range:
-    //     (a) create a set of slots for that day if the slot is valid
-    //         for that day, based in its slots.day value; 
-    //         For example: if the slots.day value == 'Monday' then only
-    //         create a slot of the day is a Monday.
-    // (7) For each slot from (6)(a) check whether its slots.starts and
-    //     slots.end value intersect the booking's starts and ends range.
-    //     If it does, mark the slot as booked. Otherwise mark it as available.
-    // (8) Return the results.
-    
-    // Step (1)
-    const starts = moment(req.params.startDate);
-    const ends = moment(req.params.endDate).endOf('day');
+  if (startDate == null) {
+    res.status(400).send('Start date is not a valid ISO-formatted date.');
+    return;
+  }
 
-    // Step (2)
-    const resourceId = req.params.resourceId;
-    
-    console.log(`starts: ${starts}, ends: ${ends}`);
-    
-    const resourceQuery = knex
-        .select('name')
-        .from('resources')
-        .where('id', '=', resourceId);
+  const endDate = checkDate(req.params.endDate);
 
-    const slotsQuery = knex
-        .select('slots.name', 'slots.starts', 'slots.ends','slots.day')
-        .from('slots')
-        .join('resources_slots', 'slots.id', '=', 'resources_slots.slot_id')
-        .where('resources_slots.resource_id', resourceId);
+  if (endDate == null) {
+    res.status(400).send('End date is not a valid ISO-formatted date.');
+    return;
+  }
 
-    const bookingsQuery = knex
-        .select('starts', 'ends')
-        .from('bookings')
-        .join('resources', 'resources.id', '=', 'bookings.resource_id')
-        .where('bookings.resource_id', '=', resourceId)
-        .where('starts', '>=', starts.toISOString())
-        .where('ends', '<=', ends.toISOString());
+  if (endDate <= startDate) {
+    res.status(400).send('The end date must be after the start date.');
+    return;
+  }
 
-    let resourceName;
-    let slots;
-    let bookings;
+  const resourceId = checkId(req.params.resourceId);
 
-    resourceQuery
-        .then(function(results) {
-            // Step (3): get the resource name
-            resourceName = results[0].name;
-            return slotsQuery;
-        })
-        .then(function (results) {
-            // Step (4): Get slots for the resource
-            slots = results;
-            return bookingsQuery;
-        })
-        .then(function (results) {
-            // Step (5): Get bookings within the start and end dates
-            bookings = results;
+  if (resourceId == null) {
+    res.status(400).send('Resource id is not valid.');
+    return;
+  }
 
-            let currentDate = moment(starts);
+  const resource = await mainModel.resources.getById(resourceId);
 
-            responseDates = {
-                dates: []
-            }
+  if (resource == null) {
+    res.status(404).send('No such resource.');
+    return;
+  }
+  const slots = await mainModel.slots.getByResourceId(resource.id);
+  const bookings = await mainModel.bookings.getByDate(startDate, endDate, resource.id);
 
-            // Step (6)
-            while(currentDate < ends) {
+  const responseDates = {
+    dates: []
+  };
 
-                date = {
-                    date: currentDate.toISOString(),
-                    resources: [{
-                            resourceName: resourceName,
-                            slots: []
-                        }
-                    ]
-                };
-
-                slots.forEach((s) => {
-
-                    responseSlot = {
-                        starts: moment(currentDate).add(s.starts),
-                        ends: moment(currentDate).add(s.ends),
-                        status: 'available'
-                    };
-
-                    // Step (6)(a)
-                    if (checkDay(currentDate, s)) {
-                        // Step (7)
-                        bookings.forEach((b) => {
-
-                        });
-                        date.resources[0].slots.push(responseSlot);
-                    };                
-                });
-
-                responseDates.dates.push(date);
-                currentDate.add(1, 'd');
-            }
-
-            // Step (8)
-            res.json(responseDates);
-        })
-        .catch(function (error) {
-            res.status(500);
-            res.json({ result: error });
+  for (let date = startDate; date <= endDate; date = date.add(1, 'd')) {
+    const dateSlots = [];
+    slots.forEach((slot) => {
+      if (_slotIsValidOnDate(slot, date)) {
+        dateSlots.push({
+          starts: moment(date).add(slot.starts),
+          ends: moment(date).add(slot.ends),
+          status: _slotIsAvailableAtTime(slot, date, resource, bookings) ? 'available' : 'unavailable'
         });
+      }
+    });
+    responseDates.dates.push({
+      date: date.toISOString(),
+      resources: [{
+        resourceName: resource.name,
+        slots: dateSlots
+      }]
+    });
+  }
+
+  return res.json(responseDates);
 });
 
-function checkDay(date, slot) {
-    // isoWeekday returns a number between
-    // 1 (Monday) and 7 (Sunday).
-    isoDay = date.isoWeekday();
+/**
+ * Checks whether a slot is available on a given date.
+ *
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @returns {boolean} true if the slot is valid on the date given, false if it is not
+ */
+function _slotIsValidOnDate (slot, date) {
+  const day = date.day();
+  const val = 2 ** day;
+  return slot.day & val;
+}
 
-    return true;
+/**
+ * Checks whether a slot is available to book, based on existing bookings and resource fields.
+ *
+ * @param {*} slot - the slot to check
+ * @param {*} date - the date to check
+ * @param {*} resource - the resource to check
+ * @param {*} bookings - all the bookings for the resource over the time period for the calendar entries
+ * @returns {boolean} true if the slot can be booked, false if it can't
+ */
+function _slotIsAvailableAtTime (slot, date, resource, bookings) {
+  const maxCapacity = resource.capacity;
+  const slotStarts = moment(date).add(slot.starts);
+  const slotEnds = moment(date).add(slot.ends);
+  let remainingCapacity = maxCapacity;
+  for (const b of bookings) {
+    const bookingStarts = moment(b.starts);
+    const bookingEnds = moment(b.ends);
+    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[)') ||
+      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '()]')) {
+      remainingCapacity--;
+    }
+  }
+  return remainingCapacity > 0;
 }

@@ -1,0 +1,102 @@
+@import "bootstrap/bootstrap";
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 50px;
+    padding-top: 3.5rem;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #f5f5f5;
+    z-index: 200;
+}
+
+.navbar-brand {
+    img {
+        height: 2rem;
+        width: auto;
+    }
+}
+
+.booking-step {
+    padding: 2rem 0 1rem 0;
+    margin: 0 0 2rem 0;
+    background-color: #e9ecef;
+}
+
+.aka {
+    font-variant: small-caps;
+}
+
+.mock-block {
+    display: grid;
+    place-items: center;
+    text-align: center;
+    height: 350px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    background-color: $gray-400;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+.sidebar {
+    position: fixed;
+    top: 3.5rem;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+
+    .nav-link {
+        font-weight: 500;
+        color: #333;
+
+        .feather {
+            margin-right: 4px;
+            color: #999;
+        }
+
+
+    }
+}
+  
+  .sidebar-sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    height: calc(100vh - 50px - 3.5rem);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
+  }
+
+.admin-top-bar {
+    margin-bottom: 0.5rem;
+    .breadcrumb {
+        padding: 0;
+        background-color: transparent;
+    }
+}
+
+

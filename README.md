@@ -8,8 +8,10 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
 ## Install
 
+NOTE: You'll need to be using `npm` version 7 or above for this to work, **and** version 14 or *earlier* of NodeJS because `node-sass` does not support version 16 yet.
+
  1. Install the dependencies `npm install`
- 1. Set up the database `npx knex migrate:latest` (or if there have been any changes to the database structure, this will run the migrations)
+ 1. Set up the database `npx knex migrate:latest --knexfile ./api/knexfile.js` (or if there have been any changes to the database structure, this will run the migrations)
  1. Create a `.env` file in this folder.  This will hold any configuration options you need to set.  For a basic development setup this should suffice:
     ````
     OPTIMISM_API_PORT = 3001
@@ -18,20 +20,24 @@ See the [issue list](https://github.com/DoESLiverpool/optimism/issues) for what 
 
     OPTIMISM_ENABLE_DETAILED_ERROR_MESSAGES = 1
     ````
- 1. [Optional] Populate the development database with some sample data: `npx knex seed:run --env development` (**WARNING: this will delete any data in the database already**)
+ 1. [Optional] Populate the development database with some sample data: `npx knex seed:run --env development --knexfile ./api/knexfile.js` (**WARNING: this will delete any data in the database already**)
 
 ## Script commands
 
 The following commands are defined in package.json:
 
 ```javascript
-"website": "nodemon --watch website website/app.js",
-"api": "nodemon --watch api api/app.js",
-"both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
-"css": "node-sass bootstrap/optimism.scss -o website/static/css",
-"css-watch": "node-sass bootstrap/optimism.scss -o website/static/css -w bootstrap/optimism.scss",
-"dev-all": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
+"scripts": {
+    "test-api": "cross-env NODE_ENV=testing mocha api --recursive --exit --timeout 3500 --require mocha-suppress-logs",
+    "website": "nodemon --watch website website/app.js",
+    "api": "nodemon --watch api api/app.js",
+    "both": "concurrently -n \"website,api\" \"npm run website\" \"npm run api\"",
+    "css": "sass website/scss/optimism.scss:website/static/css/optimism.css",
+    "css-watch": "sass website/scss/optimism.scss:website/static/css/optimism.css --watch",
+    "dev": "concurrently -n \"website,api,sass\" \"npm run website\" \"npm run api\" \"npm run css-watch\""
+}
 ```
+`npm run test-api` runs the API tests
 
 `npm run website` starts the website (by running website/app.js)
 
@@ -43,15 +49,16 @@ The following commands are defined in package.json:
 
 `npm run css-watch` watches optimisim.scss and compiles it if it changes
 
-`npm run dev-all` concurrently starts the website, api and css-watch
+`npm run dev` concurrently starts the website, api and css-watch
 
-`npm run test` (or `npm tests` or `npm t`) runs .js files in the test subfolder. You can use one of the existing files e.g. app.test.js as a template (first set the NODE_ENV environment variable to 'testing' and run `npx knex install:latest` to use the latest version of the test database)
 
 The `nodemon` commmand is used to monitor code changes in each of the website and api projects and restart these as required.
 
 The `concurrently` command is used to start more than one command concurrently. The output from all the commands is sent to the same terminal and is prefixed with a name to identify output.
 
-`node-sass` is used to compile scss.
+`sass` is used to compile scss.
+
+`eslint` is installed as a dev dependency. To run it against the api project (as an example) run `npx eslint api`.
 
 ## Project structure
 
@@ -68,3 +75,9 @@ Their interactions are orchestrated with `docker-compose`, so getting it running
   * `docker-compose up`
 
 To run any database migrations, once things are running then run: `docker-compose exec api npx knex migrate:latest --env production`
+
+Any time things are pushed to the `master` branch, the [live site will automatically deploy the new version](https://github.com/DoESLiverpool/optimism/issues/48).
+
+## Also see
+
+[Testing](./documentation/testing)

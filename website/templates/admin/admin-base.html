@@ -1,0 +1,54 @@
+{% extends "../base.html" %}
+
+{% block header %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block navbar %}
+<div class="collapse navbar-collapse">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item navbar-text text-primary">
+            ADMINISTRATION
+        </li>
+    </ul>
+    <a href="/admin/logout" class="btn btn-success my-2 my-sm-0">Sign out</a>
+</div>
+{% endblock %}
+
+{% block main %}
+
+<main role="main">
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/admin">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/bookings">Bookings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/resources">Resources</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/resource-types">Resource types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/slots">Slots</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                {% block adminContent %}
+                <p>This is admin bookings.</p>
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,5 +1,5 @@
 # Simple docker setup for the web server
-FROM node:13
+FROM node:16
 
 EXPOSE 3001
 
@@ -30,6 +30,10 @@ COPY utilities.js utilities.js
 COPY routes routes
 COPY static static
 COPY templates templates
+
+# Build the css files from scss source
+COPY scss scss
+RUN npm run css
 
 # How we want to start the server
 CMD ["node", "/home/node/app/app.js"]

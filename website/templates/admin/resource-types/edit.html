@@ -1,0 +1,31 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminMainContent %}
+<div class="row col">
+    <h2>Edit resource type</h2>
+</div>
+<div class="row">
+    <div class="col">
+        <form method="POST" action="/admin/resource-types/edit/{{ resourceType.id }}" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="resourceTypeName">Name</label>
+                    <input type="text" class="form-control" required id="resourceTypeName" name="name"
+                        aria-describedby="nameHelp" placeholder="Enter name"
+                        value="{{ resourceType.name }}">
+                    <small id="nameHelp" class="form-text text-muted">
+                        This is the display name of the resource type.
+                    </small>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Save
+            </button>
+            <a class="btn btn-secondary my-2 my-sm-0" href="/admin/resource-types/">
+                Cancel
+            </a>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
