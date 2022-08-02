@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const settings = require('../../settings');
 module.exports = router;
 
 router.get('/login', function (req, res) {
@@ -10,7 +11,7 @@ router.post('/login', function (req, res) {
   const user = req.body.user;
   const password = req.body.password;
 
-  if (user === 'someone@example.org' && password === 'password') {
+  if (user === settings.adminUsername && password === settings.adminPassword) {
     let redirect = req.query.redirect;
     if (redirect === undefined) {
       redirect = '/admin';

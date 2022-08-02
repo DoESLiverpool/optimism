@@ -1,0 +1,44 @@
+{% extends "admin/components/content-block-base.html" %}
+
+{% block adminNavExtraContent %}
+<a class="btn btn-success my-2 my-sm-0 float-right" href="/admin/slots/create">
+    Create a time slot
+</a>
+{% endblock %}
+{% block adminMainContent %}
+<div class="accordion accordion-flush">
+    {% for s in slots %}
+    <div class="row">
+        <div class="col">
+            <div class="card mb-4">
+                <div class="card-header" id="headingOne">
+                    {{ s.name }}
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Id: {{ s.id }}</li>
+                        <li>Name: {{ s.name }}</li>
+                        <li>Day: {{ s.day }}</li>
+                        <li>Starts: {{ s.starts }}</li>
+                        <li>Ends: {{ s.ends }}</li>
+                    </ul>
+                    <form method="POST" action="/admin/slots/confirm-deletion" class="mb-4">
+                        <input type="hidden" name="resourceTypeId" value="{{ r.id }}" />
+                        <input type="hidden" name="confirmed" value="no" />
+                        <div class="row">
+                            <div class="col">
+                                <a href="/admin/slots/edit/{{ r.id }}" class="btn btn-primary my-2 my-sm-0" role="button">
+                                    Edit
+                                </a>
+                                <input type="submit" class="btn btn-danger my-2 my-sm-0" role="button" name="submit"
+                                    value="Delete" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
