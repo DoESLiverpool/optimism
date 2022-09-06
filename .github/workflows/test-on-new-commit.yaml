@@ -1,0 +1,23 @@
+name: Run the tests whenever there's a new checkin to develop
+
+on:
+  push:
+    branches: [ develop ]
+
+  # Allow it to be run manually from the Github Actions tab
+  workflow_dispatch:
+
+jobs:
+  # We should add a job to run the tests first...
+
+  test:
+    name: Run the API tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build docker build --build-arg=NODE_ENVIRONMENT=testing --build-arg=TEST_FOLDER=test -t test-api --file ./api/Dockerfile
+      - name: Run the tests
+        run: docker run --rm=true -t api-test /home/node/app/node_modules/mocha/bin/mocha --recursive --exit --timeout 3500
