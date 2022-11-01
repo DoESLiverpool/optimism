@@ -18,7 +18,6 @@ describe('Basic parameter validation on calendar endpoint API', function () {
       { description: 'invalid end date', startDate: '2022-03-17', endDate: '2022-', resourceId: 1, httpStatusCode: 400 },
       { description: 'invalid resource id', startDate: '2022-03-17', endDate: '2022-03-18', resourceId: -1, httpStatusCode: 400 },
       { description: 'start date > end date', startDate: '2022-03-18', endDate: '2022-03-17', resourceId: -1, httpStatusCode: 400 },
-      { description: 'deliberately failing test', startDate: '2022-03-18', endDate: '2022-03-17', resourceId: -1, httpStatusCode: 200 },
       { description: 'non-existent resource id', startDate: '2022-03-17', endDate: '2022-03-18', resourceId: 4000, httpStatusCode: 404 }
     ];
     inputs.forEach((input) => {
