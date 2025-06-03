@@ -1,24 +1,28 @@
-db:
-  image: postgres
-  container_name: optimism_db
-  environment:
-    POSTGRES_PASSWORD: topsecret
-  volumes:
-    - ./databases/optimism_production:/var/lib/postgresql/data
-  restart: always
-api:
-  build: api/
-  container_name: optimism_api
-  ports:
-    - 127.0.0.1:3001:3001
-  links:
-    - db
-  restart: always
-website:
-  build: website/
-  container_name: optimism_website
-  ports:
-    - 127.0.0.1:3000:3000
-  links:
-    - api
-  restart: always
+services:
+  db:
+    image: postgres
+    container_name: optimism_db
+    environment:
+      POSTGRES_PASSWORD: topsecret
+    volumes:
+      - ./databases/optimism_production:/var/lib/postgresql/data
+    restart: always
+  api:
+    build: api/
+    container_name: optimism_api
+    ports:
+      - 127.0.0.1:3001:3001
+    links:
+      - db
+    restart: always
+  website:
+    build:
+      context: website/
+      args:
+        OPTIMISM_API_CLIENT_SIDE_URL: "http://localhost:3001/api"
+    container_name: optimism_website
+    ports:
+      - 127.0.0.1:3000:3000
+    links:
+      - api
+    restart: always
