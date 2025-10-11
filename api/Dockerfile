@@ -9,7 +9,7 @@ ARG NODE_ENVIRONMENT=production
 ARG TEST_FOLDER=no-test
 
 # This might be handy during debugging
-ENV NPM_CONFIG_LOGLEVEL info
+ENV NPM_CONFIG_LOGLEVEL=info
 
 ENV NODE_ENV=$NODE_ENVIRONMENT
 

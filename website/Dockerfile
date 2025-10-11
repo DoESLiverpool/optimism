@@ -4,7 +4,7 @@ FROM node:16
 EXPOSE 3001
 
 # This might be handy during debugging
-ENV NPM_CONFIG_LOGLEVEL info
+ENV NPM_CONFIG_LOGLEVEL=info
 
 ENV NODE_ENV=production
 # FIXME Get this from a better place rather than hard-coded
