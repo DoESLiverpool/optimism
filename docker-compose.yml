@@ -14,6 +14,9 @@ services:
       - 127.0.0.1:3001:3001
     links:
       - db
+    secrets:
+      - email_user
+      - email_pass
     restart: always
   website:
     build:
@@ -26,3 +29,9 @@ services:
     links:
       - api
     restart: always
+secrets:
+  email_user:
+    file: email_user
+  email_pass:
+    file: email_pass
+

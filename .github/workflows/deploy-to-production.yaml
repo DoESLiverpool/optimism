@@ -24,7 +24,11 @@ jobs:
           port: 22
           script: |
             cd optimism
+            echo ${{ secrets.EMAIL_USER }} > email_user
+            echo ${{ secrets.EMAIL_PASS }} > email_pass
             git pull
             docker-compose build --build-arg OPTIMISM_API_CLIENT_SIDE_URL=${{ secrets.API_BASE_URL }}
-            docker-compose down
-            docker-compose up -d
+            docker compose down
+            docker compose up -d
+            rm email_user
+            rm email_pass
