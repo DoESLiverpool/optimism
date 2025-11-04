@@ -8,7 +8,12 @@ ENV NPM_CONFIG_LOGLEVEL=info
 
 ENV NODE_ENV=production
 # FIXME Get this from a better place rather than hard-coded
-ENV OPTIMISM_API_URL=http://optimism_api:3001/api
+ARG OPTIMISM_API_URL=http://optimism_api:3001/api
+ENV OPTIMISM_API_URL=${OPTIMISM_API_URL}
+
+ARG OPTIMISM_API_CLIENT_SIDE_URL=http://localhost:3002/api
+ENV OPTIMISM_API_CLIENT_SIDE_URL=${OPTIMISM_API_CLIENT_SIDE_URL}
+
 
 # Install global npm modules to the non-root user (called `node` in the default Node container)
 ENV NPM_CONFIG_PREFIX=/home/node/.npm-global

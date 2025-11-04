@@ -20,6 +20,7 @@
   "dependencies": {
     "@vscode/sqlite3": "^5.0.8",
     "axios": "^0.21.1",
+    "better-sqlite3": "^11.10.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",

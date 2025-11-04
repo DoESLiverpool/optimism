@@ -19,7 +19,10 @@ services:
       - email_pass
     restart: always
   website:
-    build: website/
+    build:
+      context: website/
+      args:
+        OPTIMISM_API_CLIENT_SIDE_URL: "http://localhost:3001/api"
     container_name: optimism_website
     ports:
       - 127.0.0.1:3000:3000

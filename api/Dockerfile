@@ -1,6 +1,6 @@
 # Simple docker setup for the API server
 
-FROM node:16
+FROM node:20
 
 EXPOSE 3001
 
