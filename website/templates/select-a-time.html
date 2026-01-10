@@ -19,7 +19,7 @@
             console.log(info);
 
             if ((info.el.classList.contains('fc-event-past') == false) &&
-                (info.el.classList.contains('booked') == false)) {
+                (info.el.classList.contains('unavailable') == false)) {
               // It's a slot we can select
               // FIXME We'll need to allow multiple slots for room bookings...
               // FIXME What happens if we choose a slot, then move forwards a week and come back?
@@ -35,10 +35,10 @@
               $('input[name=finish]')[0].value = chosenSlot.event.endStr;
               $('input[name=submit]')[0].disabled = false;
             } else {
-              if (info.el.classList.contains('fc-event-past') == false) {
-                console.log("Tried to select a slot in the past!");
-              } else {
+              if (info.el.classList.contains('unavailable')) {
                 console.log("Tried to select a slot that's booked!");
+              } else {
+                console.log("Tried to select a slot in the past!");
               }
             }
           },

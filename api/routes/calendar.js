@@ -99,8 +99,9 @@ function _slotIsAvailableAtTime (slot, date, resource, bookings) {
   for (const b of bookings) {
     const bookingStarts = moment(b.starts);
     const bookingEnds = moment(b.ends);
-    if (slotStarts.isBetween(bookingStarts, bookingEnds, undefined, '[)') ||
-      slotEnds.isBetween(bookingStarts, bookingEnds, undefined, '()]')) {
+    // Check if the slot and booking overlap at all
+    // Two ranges overlap if: slotStarts < bookingEnds AND slotEnds > bookingStarts
+    if (slotStarts.isBefore(bookingEnds) && slotEnds.isAfter(bookingStarts)) {
       remainingCapacity--;
     }
   }
