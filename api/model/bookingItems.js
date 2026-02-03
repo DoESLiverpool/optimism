@@ -28,7 +28,7 @@ class BookingItems extends ModelItemsBase {
    * @returns {string} URL-safe base64 encoded random token (32 bytes)
    */
   _generateToken () {
-    return crypto.randomBytes(32).toString('base64url');
+    return crypto.randomBytes(32).toString('base64url')+Date.now().toString();
   }
 
   /**
