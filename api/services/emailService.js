@@ -14,6 +14,9 @@ if (fs.existsSync(email_user_path)) {
 if (fs.existsSync(email_pass_path)) {
   email_pass = fs.readFileSync(email_pass_path, { encoding: 'utf8' }).trim();
 }
+// The organisation email addresses
+var organisation_from_address = process.env.OPTIMISM_EMAIL_ORG_FROM_ADDR || "NEED TO SET ORGANISATION'S FROM EMAIL ADDRESS";
+var organisation_notification_address = process.env.OPTIMISM_EMAIL_ORG_NOTIFY_ADDR || "NEED TO SET ORGANISATION'S NOTIFICATION EMAIL ADDRESS";
 
 // SMTP configuration from environment variables
 const smtpHost = process.env.OPTIMISM_SMTP_HOST || 'smtp.gmail.com';
@@ -63,8 +66,9 @@ ${cancellationUrl}
 Thank you for your booking!`;
 
   const mailOptions = {
-    from: email_user,
+    from: organisation_from_address,
     to: booking.email,
+    bcc: organisation_notification_address,
     subject: subject,
     text: text
   };
