@@ -1439,12 +1439,12 @@ A VERTICAL event
 }
 
 /* Styling for slots which are already booked and so can't be chosen */
-.booked {
+.unavailable {
   background-color: #c73232;
   border-color: #c73232;
 }
 
 /* Slots that weren't booked or were booked but which are in the past and so can't be chosen */
 .fc-event-past { background-color: #9dc7f2; }
-.fc-event-past.booked { background-color: #ff887a; }
+.fc-event-past.unavailable { background-color: #ff887a; }
 

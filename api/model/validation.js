@@ -39,15 +39,27 @@ function checkDate (date) {
 function checkPostItemFields (item, modelItems) {
   // Remove primary key.
   const targetKeys = Object.keys(modelItems.jsonToTableNames).filter(key => key !== modelItems.primaryKeyColumn);
+  
+  // Define optional fields that don't need to be provided in POST requests (auto-generated/defaulted)
+  const optionalFields = ['token', 'cancelled'];
+  const requiredKeys = targetKeys.filter(key => !optionalFields.includes(key));
+  
   const itemKeys = Object.keys(item);
-  if (targetKeys.length !== itemKeys.length) {
-    return false;
-  }
+  
+  // Check that all provided keys are valid
   for (const key of itemKeys) {
     if (!targetKeys.includes(key)) {
       return false;
     }
   }
+  
+  // Check that all required keys (excluding optional ones) are present
+  for (const key of requiredKeys) {
+    if (!itemKeys.includes(key)) {
+      return false;
+    }
+  }
+  
   return true;
 }
 

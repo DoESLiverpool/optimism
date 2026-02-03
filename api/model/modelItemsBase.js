@@ -80,7 +80,7 @@ class ModelItemsBase {
    * @param {Object<string, any>} item - The item to insert. It must have all the columns except the id column.
    * @param {Function} trx - Optional knex function to be supplied when using a transaction.
    * @returns {Promise} When resolved returns an array of the form [{id: 123}] where the id is set to the inserted
-   *  row id. If the knex client is not one of 'pg' or 'sqlite3' then a rejected promise is returned.
+   *  row id. If the knex client is not one of 'pg' or 'better-sqlite3' then a rejected promise is returned.
    */
   insert (item, trx = null) {
     const knexOrTrx = trx == null ? this.knex : trx;
@@ -91,10 +91,10 @@ class ModelItemsBase {
        this value. So specific code is needed for the different
        clients that Optimism supports.
 
-       Currently these are pg (postgres) and sqlite3 (sqlite).
+       Currently these are pg (postgres) and better-sqlite3 (sqlite).
     */
     const client = knexOrTrx.client.config.client;
-    if (client === 'sqlite3') {
+    if (client === 'better-sqlite3' || client === 'sqlite3') {
       return knexOrTrx(this.tableName)
         .insert(itemWithColumnNames)
         .then(() => {
@@ -105,7 +105,7 @@ class ModelItemsBase {
       return knexOrTrx(this.tableName).returning(this.primaryKeyColumn).insert(itemWithColumnNames);
     }
     return Promise.reject(
-      new Error('The knex client is not supported. It must be one of \'pg\' or \'sqlite3\'')
+      new Error('The knex client is not supported. It must be one of \'pg\' or \'better-sqlite3\'')
     );
   }
 
