@@ -8,7 +8,16 @@ services:
       - ./databases/optimism_production:/var/lib/postgresql/data
     restart: always
   api:
-    build: api/
+    build:
+      context: api/
+      args:
+        OPTIMISM_API_CLIENT_SIDE_URL: "http://localhost:3001/api"
+        OPTIMISM_WEBSITE_BASE_URL: "http://localhost:3000"
+        OPTIMISM_EMAIL_ORG_FROM_ADDR: "bookings@example.com"
+        OPTIMISM_EMAIL_ORG_NOTIFY_ADDR: "organisers@example.com"
+        OPTIMISM_SMTP_HOST: "smtp.example.com"
+        OPTIMISM_SMTP_PORT: "587"
+        OPTIMISM_SMTP_SECURE: "false"
     container_name: optimism_api
     ports:
       - 127.0.0.1:3001:3001
