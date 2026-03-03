@@ -27,7 +27,7 @@ jobs:
             echo ${{ secrets.EMAIL_USER }} > email_user
             echo ${{ secrets.EMAIL_PASS }} > email_pass
             git pull
-            docker-compose build --build-arg OPTIMISM_API_CLIENT_SIDE_URL=${{ secrets.API_BASE_URL }}
+            docker-compose build --build-arg OPTIMISM_API_CLIENT_SIDE_URL=${{ secrets.API_BASE_URL }} --build-arg OPTIMISM_WEBSITE_BASE_URL=${{ secrets.WEBSITE_BASE_URL }} --build-arg OPTIMISM_EMAIL_ORG_FROM_ADDR=${{ secrets.EMAIL_ORG_FROM_ADDR }} --build-arg OPTIMISM_EMAIL_ORG_NOTIFY_ADDR=${{ secrets.EMAIL_ORG_NOTIFY_ADDR }} --build-arg OPTIMISM_SMTP_HOST=${{ secrets.SMTP_HOST }} --build-arg OPTIMISM_SMTP_PORT=${{ secrets.SMTP_PORT }} --build-arg OPTIMISM_SMTP_SECURE=${{ secrets.SMTP_SECURE }}
             docker compose down
             docker compose up -d
             rm email_user
