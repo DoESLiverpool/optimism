@@ -2,6 +2,24 @@ const nodemailer = require('nodemailer');
 const fs = require('fs');
 const moment = require('moment');
 
+if (process.env.NODE_ENV == 'testing')
+{
+    nodemailer.createTestAccount((err, testEmailAccount) => {
+        //console.log("Creating test email account");
+        //console.log(testEmailAccount);
+        transporter = nodemailer.createTransport({
+          host: testEmailAccount.smtp.host,
+          port: testEmailAccount.smtp.port,
+          secure: testEmailAccount.smtp.secure,
+          auth: {
+            user: testEmailAccount.user,
+            pass: testEmailAccount.pass
+          }
+        });
+        organisation_from_address = "hello@doesliverpool.com";
+        organisation_notification_address = "organisers@doesliverpool.com";
+    });
+}
 // Read in the email config from environment variables or secrets
 // Priority: Environment variables > Docker secrets > Default
 var email_user = process.env.OPTIMISM_EMAIL_USER || 'NEED TO SET EMAIL USER';
@@ -24,7 +42,7 @@ const smtpPort = parseInt(process.env.OPTIMISM_SMTP_PORT || '587', 10);
 const smtpSecure = process.env.OPTIMISM_SMTP_SECURE === 'true';
 
 // Create transporter
-const transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport({
   host: smtpHost,
   port: smtpPort,
   secure: smtpSecure,
