@@ -1,0 +1,1 @@
+The `master` branch is used purely for deploying to production. All work should be done on the `development` branch but branching off of it following the naming scheme `<feature>/<issue_number>-<name>`, for example, `feature/58-fix-test-environment`
