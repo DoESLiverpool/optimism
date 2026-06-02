@@ -70,7 +70,9 @@ describe('Basic tests to check GET, POST, PUT and DELETE endpoints as well as pa
         it(`inserts the correct ${itemsName} item in the database`, async () => {
           const response = await request(app).post(`/api/${itemsName}`).send(testData.example);
           expect(response.status).to.equal(201);
-          const newId = response.body[0].id;
+          const newId = Array.isArray(response.body)
+            ? response.body[0].id
+            : response.body.id;
           const newItem = await request(app).get(`/api/${itemsName}/${newId}`);
           expect(newItem.status).to.equal(200);
           // TODO
