@@ -18,7 +18,6 @@
   },
   "homepage": "https://github.com/DoESLiverpool/optimism#readme",
   "dependencies": {
-    "@vscode/sqlite3": "^5.0.8",
     "axios": "^0.21.1",
     "better-sqlite3": "^11.10.0",
     "chai": "^4.3.4",
@@ -33,6 +32,7 @@
     "mustache-express": "^1.3.0",
     "nodemailer": "^6.8.0",
     "nunjucks": "^3.2.2",
+    "optimism": "file:..",
     "pg": "^8.6.0",
     "supertest": "^6.1.3"
   },

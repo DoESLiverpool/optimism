@@ -38,12 +38,14 @@ describe('Specifc API tests to check DELETE endpoint for resources', function ()
   it('does not delete a resource if the transaction fails due to missing bookings table', async () => {
     // Deleting a resource and nulling any booking's resourceId where it was equal to resource.id
     // happens in a transaction. Check that resource deletion fails when there is an error in
-    // the transaction. Force the error by dropping the bookings table.
-    await knex.schema.dropTable('bookings');
+    // the transaction. Force the error by renaming the bookings table.
+    await knex.schema.renameTable('bookings', 'notbookings');
     const response = await request(app).delete('/api/resources/1');
     expect(response.status).to.equal(500);
     // Check the resource hasn't been deleted.
     const shouldStillBeThereResponse = await request(app).get('/api/resources/1');
     expect(shouldStillBeThereResponse.status).to.equal(200);
+    // And then remember to change the bookings table name back to what we expect!
+    await knex.schema.renameTable('notbookings', 'bookings');
   });
 });

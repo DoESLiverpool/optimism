@@ -5,9 +5,6 @@
 <main role="main">
     <div class="booking-step">
     <div class="container">
-        <h1>
-            Make a booking
-        </h1>
         <h2>
             <small class="text-muted">Confirmation</small><br>
             Your booking is complete     
@@ -17,17 +14,70 @@
     <div class="container">
 
         <div class="mock-block">
-            <h3>Confirmation of booking details</h3>
-            <p>Instructions to check email, contact details if any enquiries,
-            anything else useful to the user.</p>
-            <p>This is where any error messages would appear as well.</p>
+            <div class="alert alert-success" role="alert">
+                <h3>Booking Confirmed!</h3>
+                <p>Your booking has been successfully created. A confirmation email has been sent to <strong>{{booking.email}}</strong>.</p>
+            </div>
+            
+            <dl class="row">
+                <dt class="col-sm-3">Resource:</dt>
+                <dd class="col-sm-9">{{resourceName}}</dd>
+                
+                <dt class="col-sm-3">Start Time:</dt>
+                <dd class="col-sm-9">{{friendlyStartTime}}</dd>
+                
+                <dt class="col-sm-3">End Time:</dt>
+                <dd class="col-sm-9">{{friendlyEndTime}}</dd>
+                
+                {% if booking.notes %}
+                <dt class="col-sm-3">Notes:</dt>
+                <dd class="col-sm-9">{{booking.notes}}</dd>
+                {% endif %}
+            </dl>
+            
+            <div class="alert alert-info" role="alert">
+                <p>A confirmation email has been sent to <strong>{{booking.email}}</strong> with your booking details and a cancellation link.</p>
+            </div>
+            
+            <div class="mt-3">
+                <h4>Need to Cancel?</h4>
+                <p>You can cancel this booking using the link below or the link in your confirmation email:</p>
+                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#cancelBookingModal">
+                    Cancel This Booking
+                </button>
+            </div>
         </div>
 
+        <!--
         <a class="btn btn-success" href="/select-a-resource" role="button">
             Make another booking
-        </a>
+        </a>-->
 
     </div> <!-- /container -->
+
+    <!-- Cancel Booking Confirmation Modal -->
+    <div class="modal fade" id="cancelBookingModal" tabindex="-1" role="dialog" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cancelBookingModalLabel">Cancel Booking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this booking?</p>
+                    <p><strong>Resource:</strong> {{resourceName}}</p>
+                    <p><strong>Time:</strong> {{friendlyStartTime}} to {{friendlyEndTime}}</p>
+                    <p class="text-warning"><strong>This action cannot be undone.</strong></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Keep Booking</button>
+                    <a href="{{cancellationUrl}}" class="btn btn-warning">Yes, Cancel Booking</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </main>
 

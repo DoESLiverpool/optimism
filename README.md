@@ -17,6 +17,14 @@ NOTE: You'll need to be using `npm` version 7 or above for this to work, **and**
     OPTIMISM_API_PORT = 3001
     OPTIMISM_WEBSITE_PORT = 3000
     OPTIMISM_API_URL = 'http://localhost:3001/api'
+    OPTIMISM_WEBSITE_BASE_URL = 'http://localhost:3000'
+    OPTIMISM_EMAIL_ORG_FROM_ADDR = "YOUR EMAIL ADDRESS"
+    OPTIMISM_EMAIL_ORG_NOTIFY_ADDR = "YOUR EMAIL ADDRESS SO YOU GET THE NOTIFICATIONS"
+    OPTIMISM_EMAIL_USER = "A SENDAMATIC OR OTHER SMTP USER"
+    OPTIMISM_EMAIL_PASS = "A SENDAMATIC OR OTHER SMTP USER PASSWORD"
+    OPTIMISM_SMTP_HOST = "in.smtp.sendamatic.net"
+    OPTIMISM_SMTP_PORT = '587'
+    OPTIMISM_SMTP_SECURE = 'false'
 
     OPTIMISM_ENABLE_DETAILED_ERROR_MESSAGES = 1
     ````
@@ -70,9 +78,11 @@ The `bootstrap` folder contains the site scss file (optimism.scss) and a subfold
 
 For production we're running the `api` and `website` components as separate Docker containers, with an off-the-shelf Postgres container to provide the database.
 
-Their interactions are orchestrated with `docker-compose`, so getting it running should just be a case of running:
+Their interactions are orchestrated with `docker compose`, so getting it running should just be a case of running:
   * `docker-compose build`
   * `docker-compose up`
+
+For the email username and password, the docker compose setup expects two files `email_user` and `email_pass` in the root folder.
 
 To run any database migrations, once things are running then run: `docker-compose exec api npx knex migrate:latest --env production`
 

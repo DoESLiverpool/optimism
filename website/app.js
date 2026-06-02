@@ -52,6 +52,7 @@ app.use(require('./routes/select-a-resource'));
 app.use(require('./routes/select-a-time'));
 app.use(require('./routes/your-details'));
 app.use(require('./routes/confirmation'));
+app.use(require('./routes/cancel-booking'));
 app.use('/admin', require('./routes/admin/login'));
 app.use('/admin', require('./routes/admin/logout'));
 app.use('/admin', require('./routes/admin/home'));

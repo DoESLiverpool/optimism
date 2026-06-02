@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<main role="main">
+    <div class="booking-step">
+    <div class="container">
+        <h1>
+            Cancel Booking
+        </h1>
+        <h2>
+            <small class="text-muted">{% if success %}Cancellation Complete{% else %}Cancellation Error{% endif %}</small>
+        </h2>
+    </div>
+    </div>
+    <div class="container">
+
+        <div class="mock-block">
+            {% if success %}
+                <div class="alert alert-success" role="alert">
+                    <h3>Booking Cancelled</h3>
+                    <p>{{ message }}</p>
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    <h3>Cancellation Failed</h3>
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <a class="btn btn-primary" href="/select-a-resource" role="button">
+            Make another booking
+        </a>
+
+    </div> <!-- /container -->
+
+</main>
+
+{% endblock %}
+

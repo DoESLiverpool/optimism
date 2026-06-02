@@ -31,8 +31,10 @@ const testData = {
       email: 'someone@example.org',
       name: 'A Name',
       notes: 'Some notes',
-      starts: '2022-1-1',
-      ends: '2022-1-2'
+      starts: '2022-01-01T09:30:00',
+      ends: '2022-01-01T17:30:00',
+      token: '1234567890',
+      cancelled: false
     }
   }
 };
