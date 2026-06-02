@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:17.10-bookworm
     container_name: optimism_db
     environment:
       POSTGRES_PASSWORD: topsecret
@@ -19,6 +19,7 @@ services:
         OPTIMISM_SMTP_PORT: "587"
         OPTIMISM_SMTP_SECURE: "false"
     container_name: optimism_api
+    user: "${UID-1000}:${GID-1000}"
     ports:
       - 127.0.0.1:3001:3001
     links:
@@ -33,6 +34,7 @@ services:
       args:
         OPTIMISM_API_CLIENT_SIDE_URL: "http://localhost:3001/api"
     container_name: optimism_website
+    user: "${UID-1000}:${GID-1000}"
     ports:
       - 127.0.0.1:3000:3000
     links:

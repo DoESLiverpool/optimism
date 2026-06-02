@@ -9,7 +9,6 @@ on:
 
 jobs:
   # We should add a job to run the tests first...
-
   deploy:
     name: Deploy to organisers.doesliverpool.com
     runs-on: ubuntu-latest

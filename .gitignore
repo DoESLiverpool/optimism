@@ -3,3 +3,6 @@ node_modules/
 .sqlite/
 .env
 out/
+.idea/
+email_pass
+email_user
