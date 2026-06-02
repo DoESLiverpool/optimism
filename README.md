@@ -79,12 +79,12 @@ The `bootstrap` folder contains the site scss file (optimism.scss) and a subfold
 For production we're running the `api` and `website` components as separate Docker containers, with an off-the-shelf Postgres container to provide the database.
 
 Their interactions are orchestrated with `docker compose`, so getting it running should just be a case of running:
-  * `docker-compose build`
-  * `docker-compose up`
+  * `docker compose build`
+  * `docker compose up`
 
 For the email username and password, the docker compose setup expects two files `email_user` and `email_pass` in the root folder.
 
-To run any database migrations, once things are running then run: `docker-compose exec api npx knex migrate:latest --env production`
+To run any database migrations, once things are running then run: `docker compose exec api npx knex migrate:latest --env production`
 
 Any time things are pushed to the `master` branch, the [live site will automatically deploy the new version](https://github.com/DoESLiverpool/optimism/issues/48).
 

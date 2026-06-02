@@ -1,5 +1,5 @@
 # Simple docker setup for the web server
-FROM node:16
+FROM node:20-alpine
 
 EXPOSE 3001
 
