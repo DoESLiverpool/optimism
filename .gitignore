@@ -4,3 +4,5 @@ node_modules/
 .env
 out/
 .idea/
+email_pass
+email_user
