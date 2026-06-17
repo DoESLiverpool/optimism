@@ -42,7 +42,7 @@ app.use(express.static(staticFilesRootDirectory));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(session({
-  secret: 'b8268fa1-3b29-4885-80fc-e916b9949386',
+  secret: process.env.OPTIMISM_SESSION_SECRET || 'b8268fa1-3b29-4885-80fc-e916b9949386',
   resave: true,
   saveUninitialized: true
 }));
