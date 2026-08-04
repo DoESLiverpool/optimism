@@ -39,10 +39,17 @@ services:
       - 127.0.0.1:3000:3000
     links:
       - api
+    secrets:
+      - admin_user
+      - admin_pass
     restart: always
 secrets:
   email_user:
     file: email_user
   email_pass:
     file: email_pass
+  admin_user:
+    file: admin_user
+  admin_pass:
+    file: admin_pass
 

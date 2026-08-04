@@ -25,6 +25,8 @@ jobs:
             cd optimism
             echo ${{ secrets.EMAIL_USER }} > email_user
             echo ${{ secrets.EMAIL_PASS }} > email_pass
+            echo ${{ secrets.ADMIN_USERNAME }} > admin_user
+            echo ${{ secrets.ADMIN_PASSWORD }} > admin_pass
             git pull
             docker compose build --build-arg OPTIMISM_API_CLIENT_SIDE_URL=${{ secrets.API_BASE_URL }} --build-arg OPTIMISM_WEBSITE_BASE_URL=${{ secrets.WEBSITE_BASE_URL }} --build-arg OPTIMISM_EMAIL_ORG_FROM_ADDR='${{ secrets.EMAIL_ORG_FROM_ADDR }}' --build-arg OPTIMISM_EMAIL_ORG_NOTIFY_ADDR='${{ secrets.EMAIL_ORG_NOTIFY_ADDR }}' --build-arg OPTIMISM_SMTP_HOST=${{ secrets.SMTP_HOST }} --build-arg OPTIMISM_SMTP_PORT=${{ secrets.SMTP_PORT }} --build-arg OPTIMISM_SMTP_SECURE=${{ secrets.SMTP_SECURE }}
             docker compose down
@@ -32,3 +34,5 @@ jobs:
             docker compose exec api npx knex migrate:latest --env production
             rm email_user
             rm email_pass
+            rm admin_user
+            rm admin_pass
