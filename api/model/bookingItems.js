@@ -63,7 +63,7 @@ class BookingItems extends ModelItemsBase {
       .join('resources', 'resources.id', '=', 'bookings.resource_id')
       .where('bookings.resource_id', '=', resourceId)
       .where('starts', '>=', start.toISOString())
-      .where('ends', '<=', end.toISOString())
+      .where('ends', '>', start.toISOString())
       .where('cancelled', '=', false);
     return query.then((bookings) => { return bookings; });
   }

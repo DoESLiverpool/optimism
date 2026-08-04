@@ -36,10 +36,13 @@ router.get('/slots/create', async function (req, res) {
 router.post('/slots/create', async function (req, res) {
   const name = req.body.name;
   try {
-    await axios.post(`${apiUrl}/resource-types`, {
-      name: name
+    await axios.post(`${apiUrl}/slots`, {
+      name: name,
+      day: parseInt(req.body.day),
+      starts: req.body.starts,
+      ends: req.body.ends
     });
-    res.redirect('/admin/resource-types');
+    res.redirect('/admin/slots');
   } catch (error) {
     console.log(error);
     res.render('error.html', {
