@@ -9,18 +9,51 @@
             Cancel Booking
         </h1>
         <h2>
-            <small class="text-muted">{% if success %}Cancellation Complete{% else %}Cancellation Error{% endif %}</small>
+            <small class="text-muted">
+                {% if confirmation %}Confirm Cancellation{% elif success %}Cancellation Complete{% else %}Cancellation Error{% endif %}
+            </small>
         </h2>
     </div>
     </div>
     <div class="container">
 
         <div class="mock-block">
-            {% if success %}
+            {% if confirmation %}
+                <div class="alert alert-warning" role="alert">
+                    <h3>Cancel this booking?</h3>
+                    <p>Are you sure you want to cancel this booking? This action cannot be undone.</p>
+                </div>
+
+                {% if booking.resourceName or booking.starts or booking.ends %}
+                <dl class="row">
+                    {% if booking.resourceName %}
+                    <dt class="col-sm-3">Resource:</dt>
+                    <dd class="col-sm-9">{{ booking.resourceName }}</dd>
+                    {% endif %}
+                    {% if booking.starts %}
+                    <dt class="col-sm-3">Start:</dt>
+                    <dd class="col-sm-9">{{ booking.starts }}</dd>
+                    {% endif %}
+                    {% if booking.ends %}
+                    <dt class="col-sm-3">End:</dt>
+                    <dd class="col-sm-9">{{ booking.ends }}</dd>
+                    {% endif %}
+                </dl>
+                {% endif %}
+
+                <form method="post" action="{{ cancellationUrl }}">
+                    <button type="submit" class="btn btn-warning">Yes, cancel this booking</button>
+                    <a class="btn btn-secondary" href="/" role="button">Keep this booking</a>
+                </form>
+            {% elif success %}
                 <div class="alert alert-success" role="alert">
                     <h3>Booking Cancelled</h3>
                     <p>{{ message }}</p>
                 </div>
+
+                <a class="btn btn-primary" href="/select-a-resource" role="button">
+                    Make another booking
+                </a>
             {% else %}
                 <div class="alert alert-danger" role="alert">
                     <h3>Cancellation Failed</h3>
@@ -28,10 +61,6 @@
                 </div>
             {% endif %}
         </div>
-
-        <a class="btn btn-primary" href="/select-a-resource" role="button">
-            Make another booking
-        </a>
 
     </div> <!-- /container -->
 
