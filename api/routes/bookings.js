@@ -16,6 +16,30 @@ router.get('/', async function (req, res) {
   }
 });
 
+router.get('/cancel/:token', async function (req, res) {
+  const token = req.params.token;
+  if (!token || token.trim() === '') {
+    res.status(400).send('Token is required.');
+    return;
+  }
+  try {
+    const booking = await mainModel.bookings.getByToken(token);
+    if (booking == null) {
+      res.status(404).send('No booking found with this token.');
+      return;
+    }
+
+    const resource = await mainModel.resources.getById(booking.resourceId);
+    if (resource != null) {
+      booking.resourceName = resource.name;
+    }
+    res.json(booking);
+  } catch (error) {
+    console.log(`Error trying to GET booking by cancellation token: ${error}`);
+    res.status(500).send('Unexpected error trying to get a booking.');
+  }
+});
+
 router.get('/:id', async function (req, res) {
   const id = checkId(req.params.id);
   if (id == null) {
@@ -59,7 +83,7 @@ router.post('/', async function (req, res) {
     // Check for overlapping bookings
     const bookingStarts = moment(req.body.starts);
     const bookingEnds = moment(req.body.ends);
-    
+
     if (!bookingStarts.isValid() || !bookingEnds.isValid()) {
       res.status(400).send('Invalid start or end date.');
       return;
@@ -81,7 +105,7 @@ router.post('/', async function (req, res) {
     for (const existingBooking of existingBookings) {
       const existingStarts = moment(existingBooking.starts);
       const existingEnds = moment(existingBooking.ends);
-      
+
       // Two ranges overlap if: existingStarts < bookingEnds AND existingEnds > bookingStarts
       if (existingStarts.isBefore(bookingEnds) && existingEnds.isAfter(bookingStarts)) {
         overlappingCount++;
@@ -101,14 +125,12 @@ router.post('/', async function (req, res) {
     const booking = await mainModel.bookings.getById(bookingId);
 
     // Get resource information for email (reuse resource we already fetched)
-    let resourceName = 'your booking';
     if (resource) {
-      resourceName = resource.name;
       booking.resourceName = resource.name;
     }
 
     // Send confirmation email (don't fail booking creation if email fails)
-    const websiteBaseUrl = process.env.OPTIMISM_WEBSITE_BASE_URL ;
+    const websiteBaseUrl = process.env.OPTIMISM_WEBSITE_BASE_URL;
     const cancellationUrl = `${websiteBaseUrl}/cancel-booking/${booking.token}`;
     emailService.sendBookingConfirmationEmail(booking, cancellationUrl)
       .catch((error) => {
@@ -184,9 +206,27 @@ router.post('/cancel/:token', async function (req, res) {
       res.status(400).send('This booking has already been cancelled.');
       return;
     }
-    // Update booking to set cancelled = true
+
     await mainModel.bookings.update({ id: booking.id, cancelled: true });
-    res.status(200).json({ message: 'Booking cancelled successfully.', booking: { ...booking, cancelled: true } });
+    const cancelledBooking = { ...booking, cancelled: true };
+
+    // Cancellation must succeed even if loading the resource or sending the
+    // notification email fails.
+    try {
+      const resource = await mainModel.resources.getById(booking.resourceId);
+      if (resource != null) {
+        cancelledBooking.resourceName = resource.name;
+      }
+    } catch (error) {
+      console.error('Failed to load resource for cancellation notification:', error);
+    }
+
+    emailService.sendBookingCancellationNotificationEmail(cancelledBooking)
+      .catch((error) => {
+        console.error('Failed to send cancellation notification email:', error);
+      });
+
+    res.status(200).json({ message: 'Booking cancelled successfully.', booking: cancelledBooking });
   } catch (error) {
     console.log(`Error trying to cancel booking: ${error}`);
     res.status(500).send('Unexpected error trying to cancel booking');
