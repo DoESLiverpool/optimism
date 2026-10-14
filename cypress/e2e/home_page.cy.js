@@ -23,7 +23,7 @@ describe('The Home Page', () => {
 
   it('contains the booking heading and introduction', () => {
     cy.get('h1').should('contain', 'Booking resources at DoES Liverpool');
-    cy.get('.jumbotron').should('contain', 'Choose a resource, select an available time, and enter your details to make a booking.');
+    cy.get('.jumbotron').should('contain', 'Book shared DoES Liverpool resources without emailing around. Choose a resource, pick an available time, add your details, and keep the booking record in one place.');
   });
 
   it('goes to select a resource if the hero button is clicked', () => {
