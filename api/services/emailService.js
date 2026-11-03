@@ -101,7 +101,43 @@ Thank you for your booking!`;
   }
 }
 
+/**
+ * Sends a cancellation notification to the organisation.
+ * @param {Object} booking - The cancelled booking details
+ * @returns {Promise} Promise that resolves when the notification is sent
+ */
+async function sendBookingCancellationNotificationEmail (booking) {
+  const resourceName = booking.resourceName || 'your booking';
+  const startTime = moment(booking.starts).format('dddd, MMMM Do YYYY, h:mm a');
+  const endTime = moment(booking.ends).format('dddd, MMMM Do YYYY, h:mm a');
+
+  const mailOptions = {
+    from: organisation_from_address,
+    to: organisation_notification_address,
+    subject: `Booking Cancellation - ${resourceName}`,
+    text: `A booking has been cancelled.
+
+Booking Details:
+- Resource: ${resourceName}
+- Name: ${booking.name}
+- Email: ${booking.email}
+- Start: ${startTime}
+- End: ${endTime}
+${booking.notes ? `- Notes: ${booking.notes}` : ''}`
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Cancellation notification email sent successfully:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Error sending cancellation notification email:', error);
+    throw error;
+  }
+}
+
 module.exports = {
-  sendBookingConfirmationEmail
+  sendBookingConfirmationEmail,
+  sendBookingCancellationNotificationEmail
 };
 
