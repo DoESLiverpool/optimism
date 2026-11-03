@@ -8,3 +8,7 @@ email_pass
 email_user
 admin_pass
 admin_user
+graphify-out/*
+openwiki/*
+AGENTS.md
+CLAUDE.md
